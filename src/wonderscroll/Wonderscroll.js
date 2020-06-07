@@ -1,9 +1,8 @@
 class Wonderscroll {
 
-    constructor(element, options) {
+    constructor(element, travels) {
         this.element = element;
-        this.options = options;
-        this.travel = Wonderscroll.computeTravel(this);
+        this.travels = Wonderscroll.computeTravels(this.element, travels);
         Wonderscroll.watchScroll(this);
     }
 
@@ -28,7 +27,6 @@ class Wonderscroll {
             }
             styles[key] = style;
         });
-        console.log(styles);
         return styles;
     }
 
@@ -43,20 +41,23 @@ class Wonderscroll {
         return Math.min(Math.max((window.scrollY - travel.start) / travel.diff, 0), 1);
     }
 
-    static computeTravelPoint(w, screenPos) {
-        const { element, options } = w;
-        return element.offsetTop + (options.ref == 'bottom' ? element.offsetHeight : 0) - document.body.clientHeight * screenPos;
+    static computeTravelPoint(element, ref, screenPos) {
+        return element.offsetTop + (ref == 'bottom' ? element.offsetHeight : 0) - document.body.clientHeight * screenPos;
     }
 
-    static computeTravel(w) {
-        const start = Wonderscroll.computeTravelPoint(w, w.options.from);
-        const end = Math.min(Wonderscroll.computeTravelPoint(w, w.options.to), document.body.scrollHeight);
-        const diff = end - start;
-        return {
-            start: start,
-            end: end,
-            diff: diff
-        }
+    static computeTravels(element, travels) {
+        const travelsArray = Array.isArray(travels) ? travels : [travels];
+        return travelsArray.map(travel => {
+            const start = Wonderscroll.computeTravelPoint(element, travel.ref, travel.from);
+            const end = Math.min(Wonderscroll.computeTravelPoint(element, travel.ref, travel.to), document.body.scrollHeight);
+            const diff = end - start;
+            return {
+                start: start,
+                end: end,
+                diff: diff,
+                ...travel
+            }
+        });
     }
 
     static applyStyles(el, styles) {
@@ -67,9 +68,13 @@ class Wonderscroll {
 
     static watchScroll(w) {
         window.addEventListener('scroll', e => {
-            const progress = Wonderscroll.computeProgress(w.travel);
-            const styles = Wonderscroll.computeProperties(w.options.properties, progress);
-            Wonderscroll.applyStyles(w.element, styles);
+            w.travels.forEach(travel => {
+                const progress = Wonderscroll.computeProgress(travel);
+                if (progress > 0 && progress < 1) {
+                    const styles = Wonderscroll.computeProperties(travel.properties, progress);
+                    Wonderscroll.applyStyles(w.element, styles);
+                }
+            });
         });
     }
     

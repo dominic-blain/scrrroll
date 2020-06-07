@@ -32,24 +32,44 @@
 				},
 			}
 		});
-		w2 = new Wonderscroll(element2, {
-			ref: 'bottom',
-			from: 0.5,
-			to: 0,
-			properties: {
-				transform: {
-					translateY: {
+		w2 = new Wonderscroll(element2, [
+			{
+				ref: 'top',
+				from: 1,
+				to: 0.25,
+				properties: {
+					transform: {
+						translateY: {
+							from: 100,
+							to: 0,
+							unit: '%'
+						}
+					},
+					opacity: {
 						from: 0,
-						to: -100,
-						unit: '%'
+						to: 1
 					}
-				},
-				opacity: {
-					from: 1,
-					to: 0
+				}
+			},
+			{
+				ref: 'bottom',
+				from: 0.5,
+				to: 0,
+				properties: {
+					transform: {
+						translateY: {
+							from: 0,
+							to: -100,
+							unit: '%'
+						}
+					},
+					opacity: {
+						from: 1,
+						to: 0
+					}
 				}
 			}
-		})
+		])
 	});
 </script>
 
