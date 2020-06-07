@@ -1,30 +1,56 @@
 <script>
-	export let name;
+	import { onMount } from 'svelte';
+	import Wonderscroll from './wonderscroll/Wonderscroll';
+
+	let w;
+	let element;
+
+	onMount(() => {
+		w = new Wonderscroll(element, {
+			ref: 'top',
+			from: 1,
+			to: 0.25,
+			properties: {
+				transform: {
+					translateY: {
+						from: 100,
+						to: -100,
+						unit: 'px'
+					},
+					translateX: {
+						from: -100,
+						to: 100,
+						unit: 'px'
+					},
+					rotate: {
+						from: 0,
+						to: 15,
+						unit: 'deg'
+					}
+				},
+			}
+		});
+	});
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<section></section>
+<section></section>
+<section></section>
+<section></section>
+<section bind:this={element}>me!</section>
+<section></section>
+<section></section>
+<section ></section>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+	section {
+		width: 90vw;
+		margin: 5vh auto;
+		height: 30vh;
+		background-color: bisque;
 	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	section:nth-child(odd) {
+		height: 25vh;
+		background-color: beige;
 	}
 </style>
