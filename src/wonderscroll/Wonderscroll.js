@@ -9,26 +9,34 @@ class Wonderscroll {
 
     static computeProperties(properties, progress) {
         const styles = {};
+
         Object.keys(properties).forEach(key => {
             const property = properties[key];
             let style = '';
+
             if (key === 'transform') {
                 const subStyles = [];
+
                 Object.keys(property).forEach(subKey => {
                     const subProperty = property[subKey];
+
                     subStyles.push(Wonderscroll.computePropertyStyle(subProperty, subKey, progress));
                 });
                 style = subStyles.join(' ');
+            } else {
+                style = Wonderscroll.computePropertyStyle(property, key, progress);
             }
             styles[key] = style;
         });
+        console.log(styles);
         return styles;
     }
 
     static computePropertyStyle(property, name, progress) {
         const format = Wonderscroll.styleDictionnary[name] || '$';
         const value = property.from + (property.to - property.from) * progress;
-        return format.replace('$', value + property.unit);
+        const unit = property.unit || '';
+        return format.replace('$', value + unit);
     }
 
     static computeProgress(travel) {

@@ -43,6 +43,10 @@
 						to: -100,
 						unit: '%'
 					}
+				},
+				opacity: {
+					from: 1,
+					to: 0
 				}
 			}
 		})
