@@ -35,13 +35,14 @@ class Wonderscroll {
         return Math.min(Math.max((window.scrollY - travel.start) / travel.diff, 0), 1);
     }
 
-    static computeTravelPoint(el, screenPos) {
-        return el.offsetTop - document.body.clientHeight * screenPos;
+    static computeTravelPoint(w, screenPos) {
+        const { element, options } = w;
+        return element.offsetTop + (options.ref == 'bottom' ? element.offsetHeight : 0) - document.body.clientHeight * screenPos;
     }
 
     static computeTravel(w) {
-        const start = Wonderscroll.computeTravelPoint(w.element, w.options.from);
-        const end = Math.min(Wonderscroll.computeTravelPoint(w.element, w.options.to), document.body.scrollHeight);
+        const start = Wonderscroll.computeTravelPoint(w, w.options.from);
+        const end = Math.min(Wonderscroll.computeTravelPoint(w, w.options.to), document.body.scrollHeight);
         const diff = end - start;
         return {
             start: start,

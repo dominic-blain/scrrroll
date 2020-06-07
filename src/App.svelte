@@ -4,12 +4,14 @@
 
 	let w;
 	let element;
+	let w2;
+	let element2;
 
 	onMount(() => {
 		w = new Wonderscroll(element, {
 			ref: 'top',
 			from: 1,
-			to: 0.25,
+			to: 0,
 			properties: {
 				transform: {
 					translateY: {
@@ -30,6 +32,20 @@
 				},
 			}
 		});
+		w2 = new Wonderscroll(element2, {
+			ref: 'bottom',
+			from: 0.5,
+			to: 0,
+			properties: {
+				transform: {
+					translateY: {
+						from: 0,
+						to: -100,
+						unit: '%'
+					}
+				}
+			}
+		})
 	});
 </script>
 
@@ -38,7 +54,11 @@
 <section></section>
 <section></section>
 <section bind:this={element}>me!</section>
+<section bind:this={element2}>me too!</section>
 <section></section>
+<section ></section>
+<section></section>
+<section ></section>
 <section></section>
 <section ></section>
 
