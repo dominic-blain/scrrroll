@@ -1,3 +1,5 @@
+import easing from './easing'; 
+
 class Wonderscroll {
 
     constructor(element, travels) {
@@ -31,9 +33,11 @@ class Wonderscroll {
     }
 
     static computePropertyStyle(property, name, progress) {
+        const ease = !!property.ease && !!easing[property.ease] ? easing[property.ease] : easing.linear;
         const format = Wonderscroll.styleDictionnary[name] || '$';
-        const value = property.from + (property.to - property.from) * progress;
+        const value = property.from + (property.to - property.from) * ease(progress);
         const unit = property.unit || '';
+        if (name = 'opacity') console.log(`${ease(progress)} : ${progress}`);
         return format.replace('$', value + unit);
     }
 

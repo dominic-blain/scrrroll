@@ -27,7 +27,8 @@
 					rotate: {
 						from: 0,
 						to: 15,
-						unit: 'deg'
+						unit: 'deg',
+						ease: 'easeOutQuint'
 					}
 				},
 			}
@@ -42,12 +43,14 @@
 						translateY: {
 							from: 100,
 							to: 0,
-							unit: '%'
+							unit: '%',
+							ease: 'easeInCubic'
 						}
 					},
 					opacity: {
 						from: 0,
-						to: 1
+						to: 1,
+						ease: 'easeInCubic'
 					}
 				}
 			},
@@ -60,12 +63,14 @@
 						translateY: {
 							from: 0,
 							to: -100,
-							unit: '%'
+							unit: '%',
+							ease: 'easeOutCubic'
 						}
 					},
 					opacity: {
 						from: 1,
-						to: 0
+						to: 0,
+						ease: 'easeOutCubic'
 					}
 				}
 			}
