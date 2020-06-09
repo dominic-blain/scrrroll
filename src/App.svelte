@@ -51,6 +51,11 @@
 						from: 0,
 						to: 1,
 						ease: 'easeInCubic'
+					},
+					borderRadius: {
+						from: 0,
+						to: 35,
+						unit: 'px'
 					}
 				}
 			},
