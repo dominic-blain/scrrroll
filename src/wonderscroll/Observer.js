@@ -1,4 +1,4 @@
-import Mutator from './Mutator';
+import Mutator from './Mutators/Mutator';
 
 class Observer {
     constructor(element, options) {
@@ -14,6 +14,7 @@ class Observer {
         this.egde = o.egde;
         this.mutators = {};
         this.scrollPos = this._initScrollPos();
+        this.isDone = true;
         this.isIntersecting = false;
         this.isListeningScroll = false;
         this.scrollHandler = this._handleScroll.bind(this);
@@ -22,27 +23,53 @@ class Observer {
         this.intersectionObserver = new IntersectionObserver((e) => this._handleIntersecting(!!e[0].isIntersecting));
         this.intersectionObserver.observe(this.element);
     }
+    
 
     get progress() {
         return Math.min(Math.max((Math.round(window.scrollY) - this.scrollPos.start) / this.scrollPos.diff, 0), 1);
     }
 
-    addMutator(property, from, to, unit, ease) {
+    addMutator(key, from, to, unit, ease) {
         const options = {
-            property: property,
+            key: key,
             from: from,
             to: to,
             unit: unit,
             ease: ease
         }
-        this.mutators[property] = new Mutator(this.element, options);
+        this.mutators[key] = new Mutator(this.element, options);
+        this.applyMutator(key);
     }
 
     addMutators(mutators) {
         Object.keys(mutators).forEach(key => {
-            const options = mutators[key];
-            options.property = key;
-            this.mutators[key] = new Mutator(this.element, options);
+            const { from, to, unit, ease } = mutators[key];
+            this.addMutator(key, from, to, unit, ease);
+        });
+    }
+
+    applyStyles() {
+        const styles = {};
+        Object.keys(this.mutators).forEach(key => {
+            const mutator = this.mutators[key];
+            styles[mutator.cssProperty] = styles[mutator.cssProperty] || [];
+            styles[mutator.cssProperty].push(mutator.style);
+        });
+        Object.keys(styles).forEach(cssProperty => {
+            const style = styles[cssProperty].join(' ');
+            this.element.style[cssProperty] = style;
+        });
+    }
+
+    applyMutator(key) {
+        this.mutators[key].tween(this.progress);
+        this.isDone = this.progress == 0 || this.progress == 1;
+        this.applyStyles();
+    }
+
+    applyMutators() {
+        Object.keys(this.mutators).forEach(key => {
+            this.applyMutator(key);
         });
     }
 
@@ -56,15 +83,13 @@ class Observer {
     }
 
     _handleScroll() {
-        Object.keys(this.mutators).forEach(key => {
-            if (this.progress > 0 && this.progress < 1) {
-                this.mutators[key].tween(this.progress);
-            }
-            else if (!this.isIntersecting) {
-                this.isListeningScroll = false;
-                window.removeEventListener('scroll', this.scrollHandler);
-            }
-        });
+        if ((this.progress > 0 && this.progress < 1) || !this.isDone) {
+            this.applyMutators();
+        }
+        else if (!this.isIntersecting) {
+            this.isListeningScroll = false;
+            window.removeEventListener('scroll', this.scrollHandler);
+        }
     }
 
     _initScrollPos() {

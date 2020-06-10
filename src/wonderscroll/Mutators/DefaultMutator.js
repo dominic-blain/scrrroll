@@ -1,13 +1,14 @@
-import easing from './easing'; 
+import easing from '../easing'; 
 
-class Mutator {
+class DefaultMutator {
     constructor(element, options) {
         const o = {
-            ...Mutator.defaultOptions,
+            ...DefaultMutator.defaultOptions,
             ...options
         };
         this.element = element;
-        this.property = o.property;
+        this.key = o.key;
+        this.cssProperty = o.key;
         this.from = o.from;
         this.to = o.to;
         this.ease = this._initEase(o.ease);
@@ -21,7 +22,6 @@ class Mutator {
 
     tween(progress) {
         this.value = this.from + (this.to - this.from) * this.ease(progress);
-        this.element.style[this.property] = this.style;
     }
 
     _initEase(ease) {
@@ -29,9 +29,9 @@ class Mutator {
     }
 }
 
-Mutator.defaultOptions = {
+DefaultMutator.defaultOptions = {
     ease: 'linear',
     unit: 'px'
 }
 
-export default Mutator;
+export default DefaultMutator;

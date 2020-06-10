@@ -12,10 +12,12 @@
 			from: 0.5,
 			to: 0,
 			mutators: {
-				borderRadius: {
-					from: 0,
-					to: 100,
-					unit: '%'
+				
+				y: {
+					from: 100,
+					to: -100,
+					unit: '%',
+					ease: 'InQuad'
 				}
 			}
 		});
@@ -49,8 +51,6 @@
 		margin: 5vh auto;
 		height: 30vh;
 		background-color: bisque;
-		
-		transform: translateY(-50%);
 	}
 	section:nth-child(odd) {
 		height: 25vh;
