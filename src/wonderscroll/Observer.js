@@ -18,6 +18,7 @@ class Observer {
         this.isIntersecting = false;
         this.isListeningScroll = false;
         this.scrollHandler = this._handleScroll.bind(this);
+        this.raf = 0;
         
         this._initMutators(o.mutators);
         this.intersectionObserver = new IntersectionObserver((e) => this._handleIntersecting(!!e[0].isIntersecting));
@@ -26,25 +27,19 @@ class Observer {
     
 
     get progress() {
-        return Math.min(Math.max((Math.round(window.scrollY) - this.scrollPos.start) / this.scrollPos.diff, 0), 1);
+        return Math.min(Math.max((Math.round(this.scrollPos.window) - this.scrollPos.start) / this.scrollPos.diff, 0), 1);
     }
 
-    addMutator(key, from, to, unit, ease) {
-        const options = {
-            key: key,
-            from: from,
-            to: to,
-            unit: unit,
-            ease: ease
-        }
-        this.mutators[key] = new Mutator(this.element, options);
-        this.applyMutator(key);
+    addMutator(options) {
+        this.mutators[options.key] = new Mutator(this.element, options);
+        this.applyMutator(options.key);
     }
 
     addMutators(mutators) {
         Object.keys(mutators).forEach(key => {
-            const { from, to, unit, ease } = mutators[key];
-            this.addMutator(key, from, to, unit, ease);
+            const mutator = mutators[key];
+            mutator.key = key;
+            this.addMutator(mutator);
         });
     }
 
@@ -64,13 +59,13 @@ class Observer {
     applyMutator(key) {
         this.mutators[key].tween(this.progress);
         this.isDone = this.progress == 0 || this.progress == 1;
-        this.applyStyles();
     }
 
     applyMutators() {
         Object.keys(this.mutators).forEach(key => {
             this.applyMutator(key);
         });
+        this.applyStyles();
     }
 
     _handleIntersecting(value) {
@@ -83,8 +78,10 @@ class Observer {
     }
 
     _handleScroll() {
+        this.scrollPos.window = window.scrollY;
         if ((this.progress > 0 && this.progress < 1) || !this.isDone) {
-            this.applyMutators();
+            window.cancelAnimationFrame(this.raf);
+            this.raf = window.requestAnimationFrame(this.applyMutators.bind(this));
         }
         else if (!this.isIntersecting) {
             this.isListeningScroll = false;
@@ -102,6 +99,7 @@ class Observer {
         const end = Math.ceil(totalDistance - viewportHeight * this.to);
 
         return {
+            window: window.scrollY || 0,
             start: start,
             end: end,
             diff: end - start
@@ -110,6 +108,7 @@ class Observer {
 
     _initMutators(mutators) {
         this.addMutators(mutators);
+        this.applyStyles();
     }
 }
 

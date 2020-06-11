@@ -2,53 +2,47 @@
 	import { onMount } from 'svelte';
 	import Wonderscroll from './wonderscroll/Wonderscroll';
 
-	let w;
-	let element;
-	let w2;
-	let element2;
+	const elements = [];
 
 	onMount(() => {
-		w = new Wonderscroll(element, {
-			from: 0.5,
-			to: 0,
-			mutators: {
-				
-				y: {
-					from: 100,
-					to: -100,
-					unit: '%',
-					ease: 'InQuad'
+		elements.forEach((element, i) => {
+
+			const isOdd = !!(i % 2);
+
+			new Wonderscroll(element, {
+				mutators: {
+					y: {
+						from: 100 * (isOdd ? -1 : 1) ,
+						to: -100 * (isOdd ? -1 : 1),
+						ease: 'InQuad'
+					},
+					x: {
+						from: 100 * (isOdd ? -1 : 1) ,
+						to: -100 * (isOdd ? -1 : 1),
+						ease: 'InQuad'
+					},
+					backgroundColor: {
+						from: 'rgba(0,255,150,0)'
+					}
 				}
-			}
+			});
 		});
-		// w2 = new Wonderscroll(element2, {
-		// 	mutators: {
-		// 		marginTop: {
-		// 			from: 100,
-		// 			to: -100
-		// 		}
-		// 	}
-		// })
 	});
 </script>
-
-<section></section>
-<section></section>
-<section></section>
-<section></section>
-<section bind:this={element}>me!</section>
-<section bind:this={element2}>me too!</section>
-<section></section>
-<section ></section>
-<section></section>
-<section ></section>
-<section></section>
-<section ></section>
+<main>
+	{#each Array(200) as _, i}
+		<section bind:this={elements[i]}></section>
+	{/each}
+</main>
 
 <style>
-	section {
+	main {
 		width: 90vw;
-		margin: 5vh auto;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	section {
+		width: 20%;
 		height: 30vh;
 		background-color: bisque;
 	}
