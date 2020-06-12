@@ -1,14 +1,15 @@
 import DefaultMutator from './DefaultMutator';
 
 class TransformMutator extends DefaultMutator {
-    constructor(element, options) {
-        super(element, options);
+    constructor(element, key, options) {
+        super(element, key, options);
         this.cssProperty = 'transform';
     }
 
     get style() {
-        const format = TransformMutator.format[this.key];
-        return format.replace('$', this.value + this.unit);
+        const w = this;
+        const format = TransformMutator.format[w.key];
+        return format.replace('$', w.value + w.params.unit);
     }
 }
 
