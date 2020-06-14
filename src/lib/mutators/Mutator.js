@@ -1,15 +1,18 @@
 import DefaultMutator from './DefaultMutator';
 import TransformMutator from './TransformMutator';
+import ColorMutator from './ColorMutator';
 
 class Mutator {
     constructor(element, key, params) {
         const mutatorType = Mutator.mutatorTypes[key];
 
-        if (mutatorType === 'transform') {
-            return new TransformMutator(element, key, params);
-        }
-        else {
-            return new DefaultMutator(element, key, params);
+        switch (mutatorType) {
+            case 'transform':
+                return new TransformMutator(element, key, params);     
+            case 'color':
+                return new ColorMutator(element, key, params);
+            default:
+                return new DefaultMutator(element, key, params);
         }
     }
 }
@@ -19,7 +22,10 @@ Mutator.mutatorTypes = {
     x: 'transform',
     z: 'transform',
     rotate: 'transform',
-    scale: 'transform'
+    scale: 'transform',
+    color: 'color',
+    backgroundColor: 'color',
+    borderColor: 'color'
 }
 
 export default Mutator;

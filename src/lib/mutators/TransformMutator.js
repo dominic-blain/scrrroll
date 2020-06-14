@@ -3,7 +3,8 @@ import DefaultMutator from './DefaultMutator';
 class TransformMutator extends DefaultMutator {
     constructor(element, key, options) {
         super(element, key, options);
-        this.cssProperty = 'transform';
+        const w = this;
+        w.cssProperty = 'transform';
     }
 
     get style() {

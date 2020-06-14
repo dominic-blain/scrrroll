@@ -22,7 +22,9 @@
 						ease: 'InQuad'
 					},
 					backgroundColor: {
-						from: 'rgba(0,255,150,0)'
+						mode: 'rgba',
+						from: '#123123',
+						to: 'rgba(255, 0, 150, 0.5)'
 					}
 				}
 			});

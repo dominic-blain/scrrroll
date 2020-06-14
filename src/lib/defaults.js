@@ -1,3 +1,10 @@
+const ColorMutatorDefaults = {
+	params: {
+        unit: '',
+        ease: 'linear'
+	}
+}
+
 const MutatorDefaults = {
 	params: {
 		unit: 'px',
@@ -30,5 +37,6 @@ const WonderscrollDefaults = {
 export {
     WonderscrollDefaults,
     ObserverDefaults,
-    MutatorDefaults
+    MutatorDefaults,
+    ColorMutatorDefaults
 }
