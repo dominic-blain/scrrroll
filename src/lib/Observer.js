@@ -97,8 +97,8 @@ class Observer {
 
     init() {
         const w = this;
-        w._initMutators();
         w._initScroll();
+        w._initMutators();
     }
 
     _initMutators() {
