@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "../../App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n\timport { onMount } from 'svelte';\n\t// import Wonderscroll from '../../dist/Wonderscroll';\n\n\tconst elements = [];\n\n\tonMount(() => {\n\t\telements.forEach((element, i) => {\n\n\t\t\tconst isOdd = !!(i % 2);\n\n\t\t\tnew Wonderscroll(element, {\n\t\t\t\tmutators: {\n\t\t\t\t\ty: {\n\t\t\t\t\t\tfrom: 100 * (isOdd ? -1 : 1) ,\n\t\t\t\t\t\tto: -100 * (isOdd ? -1 : 1),\n\t\t\t\t\t\tease: 'InQuad'\n\t\t\t\t\t},\n\t\t\t\t\tx: {\n\t\t\t\t\t\tfrom: 100 * (isOdd ? -1 : 1) ,\n\t\t\t\t\t\tto: -100 * (isOdd ? -1 : 1),\n\t\t\t\t\t\tease: 'InQuad'\n\t\t\t\t\t},\n\t\t\t\t\tbackgroundColor: {\n\t\t\t\t\t\tmode: 'rgba',\n\t\t\t\t\t\tfrom: '#123123',\n\t\t\t\t\t\tto: 'rgba(255, 0, 150, 0.5)'\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t});\n\t});\n</script>\n<main>\n\t{#each Array(200) as _, i}\n\t\t<section bind:this={elements[i]}></section>\n\t{/each}\n</main>\n\n<style>\n\tmain {\n\t\twidth: 90vw;\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t}\n\tsection {\n\t\twidth: 20%;\n\t\theight: 30vh;\n\t\tbackground-color: bisque;\n\t}\n\tsection:nth-child(odd) {\n\t\theight: 25vh;\n\t\tbackground-color: beige;\n\t}\n</style>"
+  ],
+  "names": [],
+  "mappings": "AAwCC,IAAI,eAAC,CAAC,AACL,KAAK,CAAE,IAAI,CACX,OAAO,CAAE,IAAI,CACb,SAAS,CAAE,IAAI,AAChB,CAAC,AACD,OAAO,eAAC,CAAC,AACR,KAAK,CAAE,GAAG,CACV,MAAM,CAAE,IAAI,CACZ,gBAAgB,CAAE,MAAM,AACzB,CAAC,AACD,sBAAO,WAAW,GAAG,CAAC,AAAC,CAAC,AACvB,MAAM,CAAE,IAAI,CACZ,gBAAgB,CAAE,KAAK,AACxB,CAAC"
+}

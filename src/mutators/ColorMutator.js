@@ -40,7 +40,6 @@ class ColorMutator extends DefaultMutator {
             from: ColorMutator.toRGB(w.params.from),
             to: ColorMutator.toRGB(w.params.to)
         }
-        console.log(w.colors)
     }
 
     static toRGB(string) {

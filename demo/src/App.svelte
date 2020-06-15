@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import Wonderscroll from '../../src/Wonderscroll';
+	// import Wonderscroll from '../../dist/Wonderscroll';
 
 	const elements = [];
 
