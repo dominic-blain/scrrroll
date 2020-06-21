@@ -534,42 +534,10 @@ var ColorMutator = /*#__PURE__*/function (_DefaultMutator) {
       var match = !!string.match(regex) ? string.match(regex)[0] : null;
       return match;
     }
-  }, {
-    key: "getHexDigit",
-    value: function getHexDigit(digit) {
-      try {
-        if (typeof digit === 'string') {
-          if (digit.length === 1) {
-            return ColorMutator.hexDigits[digit];
-          } else {
-            throw "Digit '".concat(digig, "' must be a single charater");
-          }
-        } else if (typeof digit === 'number') {
-          if (digit <= 9 && digit >= 0) {
-            return Math.max(digit, 1);
-          } else {
-            throw "Digit '".concat(digit, "' must be between 0-9");
-          }
-        } else {
-          throw "Digit '".concat(digit, "' must be a number or a string.");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
   }]);
 
   return ColorMutator;
 }(DefaultMutator);
-
-ColorMutator.hexDigits = {
-  A: 10,
-  B: 11,
-  C: 12,
-  D: 13,
-  E: 14,
-  F: 15
-};
 
 var Mutator = function Mutator(element, key, params) {
   _classCallCheck(this, Mutator);
@@ -728,11 +696,13 @@ var Observer = /*#__PURE__*/function () {
     key: "_initScroll",
     value: function _initScroll() {
       var w = this;
-      var edgeDistance = w.params.egde === 'bottom' ? w.element.offsetHeight : 0;
-      var totalDistance = w.element.offsetTop + edgeDistance;
+      var elementHeight = w.element.offsetHeight;
       var viewportHeight = document.body.clientHeight;
-      var start = Math.floor(totalDistance - viewportHeight * w.params.from);
-      var end = Math.ceil(totalDistance - viewportHeight * w.params.to);
+      var startEdgeDistance = w.params.edge === 'bottom' ? elementHeight : 0;
+      var endEgdeDistance = w.params.edge === 'both' ? elementHeight : 0;
+      var startDistance = w.element.offsetTop + startEdgeDistance;
+      var start = Math.floor(startDistance - viewportHeight * w.params.from);
+      var end = Math.ceil(startDistance + endEgdeDistance - viewportHeight * w.params.to);
       w.scroll = {
         current: window.scrollY || 0,
         start: start,
@@ -772,7 +742,8 @@ var Observer = /*#__PURE__*/function () {
     key: "progress",
     get: function get() {
       var w = this;
-      return Math.min(Math.max((Math.round(w.scroll.current) - w.scroll.start) / w.scroll.diff, 0), 1);
+      var progress = Math.min(Math.max((Math.round(w.scroll.current) - w.scroll.start) / w.scroll.diff, 0), 1);
+      return progress;
     }
   }]);
 

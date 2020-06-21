@@ -311,7 +311,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (35:1) {#each Array(200) as _, i}
+    // (32:1) {#each Array(200) as _, i}
     function create_each_block(ctx) {
     	let section;
     	let i = /*i*/ ctx[4];
@@ -322,7 +322,7 @@ var app = (function () {
     		c: function create() {
     			section = element("section");
     			attr_dev(section, "class", "svelte-1qt7czs");
-    			add_location(section, file, 35, 2, 657);
+    			add_location(section, file, 32, 2, 529);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, section, anchor);
@@ -347,7 +347,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(35:1) {#each Array(200) as _, i}",
+    		source: "(32:1) {#each Array(200) as _, i}",
     		ctx
     	});
 
@@ -373,7 +373,7 @@ var app = (function () {
     			}
 
     			attr_dev(main, "class", "svelte-1qt7czs");
-    			add_location(main, file, 33, 0, 620);
+    			add_location(main, file, 30, 0, 492);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -438,12 +438,8 @@ var app = (function () {
 
     			new Wonderscroll(element,
     			{
+    					params: { edge: "both" },
     					mutators: {
-    						y: {
-    							from: 100 * (isOdd ? -1 : 1),
-    							to: -100 * (isOdd ? -1 : 1),
-    							ease: "InQuad"
-    						},
     						x: {
     							from: 100 * (isOdd ? -1 : 1),
     							to: -100 * (isOdd ? -1 : 1),

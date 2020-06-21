@@ -1,6 +1,5 @@
 <script>
 	import { onMount } from 'svelte';
-	// import Wonderscroll from '../../dist/Wonderscroll';
 
 	const elements = [];
 
@@ -10,12 +9,10 @@
 			const isOdd = !!(i % 2);
 
 			new Wonderscroll(element, {
+				params: {
+					edge: 'both'
+				},
 				mutators: {
-					y: {
-						from: 100 * (isOdd ? -1 : 1) ,
-						to: -100 * (isOdd ? -1 : 1),
-						ease: 'InQuad'
-					},
 					x: {
 						from: 100 * (isOdd ? -1 : 1) ,
 						to: -100 * (isOdd ? -1 : 1),

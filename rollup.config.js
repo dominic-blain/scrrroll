@@ -16,14 +16,16 @@ export default {
             plugins: [terser()]
         },
         {
-            file: 'demo/public/wonderscroll.min.js',
+            file: 'demo/public/wonderscroll.js',
+            sourcemap: true,
             format: 'iife',
-            name: 'Wonderscroll',
-            plugins: [terser()]
+            name: 'Wonderscroll'
         }
     ],
     plugins: [
         resolve(),
-        babel()
+        babel({
+            babelHelpers: 'bundled'
+        })
     ]
 }

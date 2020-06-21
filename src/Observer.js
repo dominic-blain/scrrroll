@@ -34,7 +34,8 @@ class Observer {
 
     get progress() {
         const w = this;
-        return Math.min(Math.max((Math.round(w.scroll.current) - w.scroll.start) / w.scroll.diff, 0), 1);
+        const progress = Math.min(Math.max((Math.round(w.scroll.current) - w.scroll.start) / w.scroll.diff, 0), 1);
+        return progress;
     }
 
     update(key) {
@@ -114,12 +115,15 @@ class Observer {
     _initScroll() {
         const w = this;
 
-        const edgeDistance = w.params.egde === 'bottom' ? w.element.offsetHeight : 0;
-        const totalDistance = w.element.offsetTop + edgeDistance;
+        const elementHeight = w.element.offsetHeight;
         const viewportHeight = document.body.clientHeight;
 
-        const start = Math.floor(totalDistance - viewportHeight * w.params.from);
-        const end = Math.ceil(totalDistance - viewportHeight * w.params.to);
+        const startEdgeDistance = w.params.edge === 'bottom' ? elementHeight : 0;
+        const endEgdeDistance =  w.params.edge === 'both' ? elementHeight : 0;
+        const startDistance = w.element.offsetTop + startEdgeDistance;
+
+        const start = Math.floor(startDistance - viewportHeight * w.params.from);
+        const end = Math.ceil(startDistance + endEgdeDistance - viewportHeight * w.params.to);
 
         w.scroll = {
             current: window.scrollY || 0,

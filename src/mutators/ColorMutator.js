@@ -132,37 +132,6 @@ class ColorMutator extends DefaultMutator {
         const match = !!string.match(regex) ? string.match(regex)[0] : null;
         return match;
     }
-
-    static getHexDigit(digit) {
-        try {
-            if (typeof digit === 'string') {
-                if (digit.length === 1) {
-                    return ColorMutator.hexDigits[digit];
-                } else {
-                    throw `Digit '${digig}' must be a single charater`;
-                }
-            } else if (typeof digit === 'number') {
-                if (digit <= 9 && digit >= 0) {
-                    return Math.max(digit, 1);
-                } else {
-                    throw `Digit '${digit}' must be between 0-9`;
-                }
-            } else {
-                throw `Digit '${digit}' must be a number or a string.`;
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-}
-
-ColorMutator.hexDigits = {
-    A: 10,
-    B: 11,
-    C: 12,
-    D: 13,
-    E: 14,
-    F: 15
 }
 
 export default ColorMutator;
