@@ -306,40 +306,26 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[2] = list[i];
-    	child_ctx[4] = i;
+    	child_ctx[1] = list[i];
+    	child_ctx[3] = i;
     	return child_ctx;
     }
 
-    // (32:1) {#each Array(200) as _, i}
+    // (27:1) {#each Array(200) as _, i}
     function create_each_block(ctx) {
     	let section;
-    	let i = /*i*/ ctx[4];
-    	const assign_section = () => /*section_binding*/ ctx[1](section, i);
-    	const unassign_section = () => /*section_binding*/ ctx[1](null, i);
 
     	const block = {
     		c: function create() {
     			section = element("section");
-    			attr_dev(section, "class", "svelte-1qt7czs");
-    			add_location(section, file, 32, 2, 529);
+    			attr_dev(section, "class", "wonderscroll svelte-1qt7czs");
+    			add_location(section, file, 27, 2, 395);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, section, anchor);
-    			assign_section();
-    		},
-    		p: function update(new_ctx, dirty) {
-    			ctx = new_ctx;
-
-    			if (i !== /*i*/ ctx[4]) {
-    				unassign_section();
-    				i = /*i*/ ctx[4];
-    				assign_section();
-    			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(section);
-    			unassign_section();
     		}
     	};
 
@@ -347,7 +333,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(32:1) {#each Array(200) as _, i}",
+    		source: "(27:1) {#each Array(200) as _, i}",
     		ctx
     	});
 
@@ -373,7 +359,7 @@ var app = (function () {
     			}
 
     			attr_dev(main, "class", "svelte-1qt7czs");
-    			add_location(main, file, 30, 0, 492);
+    			add_location(main, file, 25, 0, 358);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -385,31 +371,7 @@ var app = (function () {
     				each_blocks[i].m(main, null);
     			}
     		},
-    		p: function update(ctx, [dirty]) {
-    			if (dirty & /*elements*/ 1) {
-    				each_value = Array(200);
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(main, null);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
-    			}
-    		},
+    		p: noop,
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
@@ -430,29 +392,20 @@ var app = (function () {
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	const elements = [];
+    	let elements;
 
     	onMount(() => {
-    		elements.forEach((element, i) => {
-    			const isOdd = !!(i % 2);
-
-    			new Wonderscroll(element,
-    			{
-    					params: { edge: "both" },
-    					mutators: {
-    						x: {
-    							from: 100 * (isOdd ? -1 : 1),
-    							to: -100 * (isOdd ? -1 : 1),
-    							ease: "InQuad"
-    						},
-    						backgroundColor: {
-    							mode: "rgba",
-    							from: "#123123",
-    							to: "rgba(255, 0, 150, 0.5)"
-    						}
+    		elements = new Wonderscroll({
+    				params: { edge: "both" },
+    				mutators: {
+    					x: { from: 100, to: -100, ease: "InQuad" },
+    					backgroundColor: {
+    						mode: "rgba",
+    						from: "#123123",
+    						to: "rgba(255, 0, 150, 0.5)"
     					}
-    				});
-    		});
+    				}
+    			});
     	});
 
     	const writable_props = [];
@@ -463,18 +416,17 @@ var app = (function () {
 
     	let { $$slots = {}, $$scope } = $$props;
     	validate_slots("App", $$slots, []);
+    	$$self.$capture_state = () => ({ onMount, elements });
 
-    	function section_binding($$value, i) {
-    		if (elements[i] === $$value) return;
+    	$$self.$inject_state = $$props => {
+    		if ("elements" in $$props) elements = $$props.elements;
+    	};
 
-    		binding_callbacks[$$value ? "unshift" : "push"](() => {
-    			elements[i] = $$value;
-    			$$invalidate(0, elements);
-    		});
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
     	}
 
-    	$$self.$capture_state = () => ({ onMount, elements });
-    	return [elements, section_binding];
+    	return [];
     }
 
     class App extends SvelteComponentDev {

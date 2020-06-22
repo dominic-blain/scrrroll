@@ -1,7 +1,7 @@
 const _ = {
     each(enumerable, callback) {
         const array = this.isPlainObject(enumerable) ? Object.keys(enumerable) : this.forceArray(enumerable);
-        array.forEach(callback);
+        array.forEach(item => callback(item));
     },
     forceArray(value) {
         return Array.isArray(value) ? value : [value]
@@ -24,7 +24,7 @@ const _ = {
             }
             else if (typeof element === 'string') {
                 el = document.querySelectorAll(element);
-                if (el === null) {
+                if (el === null || el.length === 0) {
                     throw `Element Not Found: Could not find Element with ${element} selector.`;
                 }
             }
@@ -41,6 +41,9 @@ const _ = {
     },
     isPlainObject(value) {
         return !!value.constructor && value.constructor === Object;
+    },
+    isPlainArray(value) {
+        return !!value.constructor && value.constructor === Array;
     }
 }
 

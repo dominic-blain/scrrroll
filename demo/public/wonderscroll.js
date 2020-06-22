@@ -187,7 +187,9 @@ var Wonderscroll = (function () {
   var _ = {
     each: function each(enumerable, callback) {
       var array = this.isPlainObject(enumerable) ? Object.keys(enumerable) : this.forceArray(enumerable);
-      array.forEach(callback);
+      array.forEach(function (item) {
+        return callback(item);
+      });
     },
     forceArray: function forceArray(value) {
       return Array.isArray(value) ? value : [value];
@@ -213,7 +215,7 @@ var Wonderscroll = (function () {
         } else if (typeof element === 'string') {
           el = document.querySelectorAll(element);
 
-          if (el === null) {
+          if (el === null || el.length === 0) {
             throw "Element Not Found: Could not find Element with ".concat(element, " selector.");
           }
         } else {
@@ -230,6 +232,9 @@ var Wonderscroll = (function () {
     },
     isPlainObject: function isPlainObject(value) {
       return !!value.constructor && value.constructor === Object;
+    },
+    isPlainArray: function isPlainArray(value) {
+      return !!value.constructor && value.constructor === Array;
     }
   };
 
@@ -764,7 +769,7 @@ var Wonderscroll = (function () {
         args[_key] = arguments[_key];
       }
 
-      if (args.length < 3 && args[0].constructor && (args[0].constructor == Object || args[0].constructor === Array)) {
+      if (args.length < 3 && (_.isPlainObject(args[0]) || _.isPlainArray(args[0]))) {
         observers = args[0];
         params = args[1];
       } else {
@@ -775,15 +780,21 @@ var Wonderscroll = (function () {
 
       w.params = _.merge(WonderscrollDefaults.params, params);
       w.queue = {
-        element: element || params.defaultElement,
-        observers: _.forceArray(_.merge(WonderscrollDefaults.observers, observers))
+        element: element || w.params.defaultElement,
+        observers: _.forceArray(observers).map(function (observer) {
+          return _.merge(WonderscrollDefaults.observers, observer);
+        })
       };
       w.element = undefined;
       w.observers = [];
       w.isInited = false;
 
       if (!!w.params.init) {
-        w.init();
+        var initElement = w.init();
+
+        if (!!initElement && initElement.length > 1) {
+          return initElement;
+        }
       }
     }
 
@@ -814,6 +825,14 @@ var Wonderscroll = (function () {
 
         w._initElement();
 
+        if (w.element.length > 1) {
+          var elements = [];
+          w.element.forEach(function (el) {
+            elements.push(new Wonderscroll(el, w.queue.observers, w.params));
+          });
+          return elements;
+        }
+
         w._initObservers();
 
         w.isInited = true;
@@ -822,7 +841,10 @@ var Wonderscroll = (function () {
       key: "_initElement",
       value: function _initElement() {
         var w = this;
-        w.element = _.queryElement(w.queue.element);
+
+        var element = _.queryElement(w.queue.element);
+
+        w.element = element;
         w.queue.element = undefined;
       }
     }, {

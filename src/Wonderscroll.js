@@ -10,7 +10,7 @@ class Wonderscroll {
         let observers;
         let params;
 
-        if (args.length < 3 && args[0].constructor && (args[0].constructor == Object || args[0].constructor === Array)) {
+        if (args.length < 3 && (_.isPlainObject(args[0]) || _.isPlainArray(args[0]))) {
             [observers, params] = args;
         } else {
             [element, observers, params] = args;
@@ -18,15 +18,20 @@ class Wonderscroll {
 
         w.params = _.merge(defaults.params, params);
         w.queue = {
-            element: element || params.defaultElement,
-            observers: _.forceArray(_.merge(defaults.observers, observers))
+            element: element || w.params.defaultElement,
+            observers: _.forceArray(observers).map(observer => {
+                return _.merge(defaults.observers, observer)
+            })
         }
         w.element = undefined;
         w.observers = [];
         w.isInited = false;
 
         if (!!w.params.init) {
-            w.init();
+            const initElement = w.init();
+            if (!!initElement && initElement.length > 1) {
+                return initElement;
+            }
         }
     }
 
@@ -52,13 +57,22 @@ class Wonderscroll {
     init() {
         const w = this;
         w._initElement();
+        if (w.element.length > 1) {
+            const elements = [];
+            w.element.forEach(el => {
+                elements.push(new Wonderscroll(el, w.queue.observers, w.params));
+            });
+            return elements;
+        }
         w._initObservers();
         w.isInited = true;
     }
 
     _initElement() {
         const w = this;
-        w.element = _.queryElement(w.queue.element);
+        const element = _.queryElement(w.queue.element);
+        
+        w.element = element;
         w.queue.element = undefined;
     }
 
