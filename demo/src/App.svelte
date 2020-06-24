@@ -8,13 +8,13 @@
 			new Wonderscroll(element, [{
 				params: {
 					edge: 'both',
-					from: 0.5,
+					from: 0.25,
 					to: 0
 				},
 				mutators: {
 					y: {
 						from: 0,
-						to: -100,
+						to: -300,
 						ease: 'InQuad'
 					},
 					backgroundColor: {
@@ -28,11 +28,11 @@
 				params: {
 					edge: 'top',
 					from: 1,
-					to: 0.5
+					to: 0.75
 				},
 				mutators: {
 					y: {
-						from: 100,
+						from: -200,
 						to: 0,
 						ease: 'OutQuad',
 						unit: "%"
@@ -50,18 +50,22 @@
 						ease: 'QuadOut'
 					}
 				}
-			}]);
+			}], {
+				debug: true
+			});
 		});
 	});
 </script>
 <main>
-	{#each Array(200) as _, i}
+	{#each Array(1) as _, i}
 		<section bind:this={elements[i]} class="wonderscroll"></section>
 	{/each}
+	<section></section>
 </main>
 
 <style>
 	main {
+		margin: 200vh 0;
 		width: 90vw;
 		display: flex;
 		flex-wrap: wrap;

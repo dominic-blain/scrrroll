@@ -30,7 +30,7 @@ class Wonderscroll {
         w.scrollHandler = w._handleScroll.bind(this);
         w.isInitiating = false;
         w.isInited = false;
-        w.isOnScreen = false;
+        w.isVisible = false;
         w.isListeningScroll = false;
         w.isActive = true;
         
@@ -43,17 +43,29 @@ class Wonderscroll {
         }
     }
 
-    get activeObservers() {
+    set listenToScroll(value) {
         const w = this;
-        const observers = [];
-        _.each(w.observers, observer => {
-            
-            if (!observer.isDone) {
-                observers.push(observer);
-            }
-        });
-        w.isActive = !!observers.length && observers.length > 0;
-        return observers;
+        const fx = !!value ? 'addEventListener' : 'removeEventListener';
+        w.isListeningScroll = value;
+        window[fx]('scroll', w.scrollHandler);
+        if (!!w.params.debug) {
+            console.group(`Wonderscroll SET listenToScroll: ${w.isListeningScroll}`);
+            console.log(`Scroll Position: ${window.scrollY}`);
+            console.log(w);
+            console.groupEnd();
+            w.element.setAttribute('data-listening-scroll', w.isListeningScroll);
+        }
+    }
+
+    set active(value) {
+        const w = this;
+        w.isActive = value;
+        if (!!w.params.debug) {
+            console.groupCollapsed(`Wonderscroll SET active: ${w.isActive}`);
+            console.log(w);
+            console.groupEnd();
+            w.element.setAttribute('data-active', w.isActive);
+        }
     }
     
     update(key) {
@@ -66,9 +78,8 @@ class Wonderscroll {
         if (!!w.isActive) {
             window.cancelAnimationFrame(w.raf);
             w.raf = window.requestAnimationFrame(w.applyMutations.bind(w));
-        } else if (!w.isOnScreen) {
-            w.isListeningScroll = false;
-            window.removeEventListener('scroll', w.scrollHandler);
+        } else if (!w.isVisible) {
+            // w.listenToScroll = false;
         }
     }
 
@@ -78,8 +89,8 @@ class Wonderscroll {
         _.each(w.observers, observer => {
             observer.scroll.current = w.scrollPos;
             observer.getMutations();
-            if (!observer.isDone) {
-                w.isActive = true;
+            if (!observer.isDone && !w.isActive) {
+                w.active = true;
             }
         });
     }
@@ -117,7 +128,9 @@ class Wonderscroll {
             const style = cssStyles[cssProperty].join(' ');
             w.element.style[cssProperty] = style;
         });
-        w.isActive = hasActiveObservers;
+        if (w.isActive !== hasActiveObservers) {
+            w.active = hasActiveObservers;
+        }
     }
 
     addObserver(mutators, params) {
@@ -139,16 +152,6 @@ class Wonderscroll {
         });
     }
 
-    _handleIntersecting(e) {
-        const w = this;
-        w.isOnScreen = !!e[0].isIntersecting;
-
-        if (!!w.isOnScreen && !w.isListeningScroll) {
-            w.isListeningScroll = true;
-            window.addEventListener('scroll', w.scrollHandler);
-        }
-    }
-
     _handleScroll() {
         const w = this;
         w.scrollPos = window.scrollY;
@@ -167,11 +170,10 @@ class Wonderscroll {
             return elements;
         }
         w._initObservers();
-        w.intersectionObserver = new IntersectionObserver((e) => w._handleIntersecting(e));
-        w.intersectionObserver.observe(w.element);
         if (!!w.params.updateOnInit) {
             w.update();    
         }
+        w.listenToScroll = true;
         w.isInited = true;
     }
 

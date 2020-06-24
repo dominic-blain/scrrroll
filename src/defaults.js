@@ -31,6 +31,7 @@ const WonderscrollDefaults = {
 		defaultElement: '.wonderscroll',
 		updateOnInit: true,
 		updateOnResize: true,
+		debug: false
 	}
 }
 

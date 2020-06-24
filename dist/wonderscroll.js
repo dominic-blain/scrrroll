@@ -179,7 +179,8 @@ var WonderscrollDefaults = {
     observerNamePrefix: 'observer',
     defaultElement: '.wonderscroll',
     updateOnInit: true,
-    updateOnResize: true
+    updateOnResize: true,
+    debug: false
   }
 };
 
@@ -754,7 +755,7 @@ var Wonderscroll = /*#__PURE__*/function () {
     w.scrollHandler = w._handleScroll.bind(this);
     w.isInitiating = false;
     w.isInited = false;
-    w.isOnScreen = false;
+    w.isVisible = false;
     w.isListeningScroll = false;
     w.isActive = true;
 
@@ -777,10 +778,7 @@ var Wonderscroll = /*#__PURE__*/function () {
       if (!!w.isActive) {
         window.cancelAnimationFrame(w.raf);
         w.raf = window.requestAnimationFrame(w.applyMutations.bind(w));
-      } else if (!w.isOnScreen) {
-        w.isListeningScroll = false;
-        window.removeEventListener('scroll', w.scrollHandler);
-      }
+      } else if (!w.isVisible) ;
     }
   }, {
     key: "getMutations",
@@ -791,8 +789,8 @@ var Wonderscroll = /*#__PURE__*/function () {
         observer.scroll.current = w.scrollPos;
         observer.getMutations();
 
-        if (!observer.isDone) {
-          w.isActive = true;
+        if (!observer.isDone && !w.isActive) {
+          w.active = true;
         }
       });
     }
@@ -835,7 +833,9 @@ var Wonderscroll = /*#__PURE__*/function () {
         w.element.style[cssProperty] = style;
       });
 
-      w.isActive = hasActiveObservers;
+      if (w.isActive !== hasActiveObservers) {
+        w.active = hasActiveObservers;
+      }
     }
   }, {
     key: "addObserver",
@@ -856,17 +856,6 @@ var Wonderscroll = /*#__PURE__*/function () {
       _.each(observers, function (observer) {
         w.addObserver(observer.mutators, observer.params);
       });
-    }
-  }, {
-    key: "_handleIntersecting",
-    value: function _handleIntersecting(e) {
-      var w = this;
-      w.isOnScreen = !!e[0].isIntersecting;
-
-      if (!!w.isOnScreen && !w.isListeningScroll) {
-        w.isListeningScroll = true;
-        window.addEventListener('scroll', w.scrollHandler);
-      }
     }
   }, {
     key: "_handleScroll",
@@ -893,15 +882,11 @@ var Wonderscroll = /*#__PURE__*/function () {
 
       w._initObservers();
 
-      w.intersectionObserver = new IntersectionObserver(function (e) {
-        return w._handleIntersecting(e);
-      });
-      w.intersectionObserver.observe(w.element);
-
       if (!!w.params.updateOnInit) {
         w.update();
       }
 
+      w.listenToScroll = true;
       w.isInited = true;
     }
   }, {
@@ -922,19 +907,33 @@ var Wonderscroll = /*#__PURE__*/function () {
       w.queue.observers = [];
     }
   }, {
-    key: "activeObservers",
-    get: function get() {
+    key: "listenToScroll",
+    set: function set(value) {
       var w = this;
-      var observers = [];
+      var fx = !!value ? 'addEventListener' : 'removeEventListener';
+      w.isListeningScroll = value;
+      window[fx]('scroll', w.scrollHandler);
 
-      _.each(w.observers, function (observer) {
-        if (!observer.isDone) {
-          observers.push(observer);
-        }
-      });
+      if (!!w.params.debug) {
+        console.group("Wonderscroll SET listenToScroll: ".concat(w.isListeningScroll));
+        console.log("Scroll Position: ".concat(window.scrollY));
+        console.log(w);
+        console.groupEnd();
+        w.element.setAttribute('data-listening-scroll', w.isListeningScroll);
+      }
+    }
+  }, {
+    key: "active",
+    set: function set(value) {
+      var w = this;
+      w.isActive = value;
 
-      w.isActive = !!observers.length && observers.length > 0;
-      return observers;
+      if (!!w.params.debug) {
+        console.groupCollapsed("Wonderscroll SET active: ".concat(w.isActive));
+        console.log(w);
+        console.groupEnd();
+        w.element.setAttribute('data-active', w.isActive);
+      }
     }
   }]);
 

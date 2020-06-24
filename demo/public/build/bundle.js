@@ -24,6 +24,10 @@ var app = (function () {
     function safe_not_equal(a, b) {
         return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
     }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
     function insert(target, node, anchor) {
         target.insertBefore(node, anchor || null);
     }
@@ -38,6 +42,12 @@ var app = (function () {
     }
     function element(name) {
         return document.createElement(name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
     }
     function attr(node, attribute, value) {
         if (value == null)
@@ -253,6 +263,10 @@ var app = (function () {
     function dispatch_dev(type, detail) {
         document.dispatchEvent(custom_event(type, Object.assign({ version: '3.23.0' }, detail)));
     }
+    function append_dev(target, node) {
+        dispatch_dev("SvelteDOMInsert", { target, node });
+        append(target, node);
+    }
     function insert_dev(target, node, anchor) {
         dispatch_dev("SvelteDOMInsert", { target, node, anchor });
         insert(target, node, anchor);
@@ -311,7 +325,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (58:1) {#each Array(200) as _, i}
+    // (60:1) {#each Array(1) as _, i}
     function create_each_block(ctx) {
     	let section;
     	let i = /*i*/ ctx[4];
@@ -321,8 +335,8 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			section = element("section");
-    			attr_dev(section, "class", "wonderscroll svelte-1qt7czs");
-    			add_location(section, file, 58, 2, 845);
+    			attr_dev(section, "class", "wonderscroll svelte-1g0nao5");
+    			add_location(section, file, 60, 2, 870);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, section, anchor);
@@ -347,7 +361,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(58:1) {#each Array(200) as _, i}",
+    		source: "(60:1) {#each Array(1) as _, i}",
     		ctx
     	});
 
@@ -356,7 +370,9 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let main;
-    	let each_value = Array(200);
+    	let t;
+    	let section;
+    	let each_value = Array(1);
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -372,8 +388,12 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(main, "class", "svelte-1qt7czs");
-    			add_location(main, file, 56, 0, 808);
+    			t = space();
+    			section = element("section");
+    			attr_dev(section, "class", "svelte-1g0nao5");
+    			add_location(section, file, 62, 1, 945);
+    			attr_dev(main, "class", "svelte-1g0nao5");
+    			add_location(main, file, 58, 0, 835);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -384,10 +404,13 @@ var app = (function () {
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(main, null);
     			}
+
+    			append_dev(main, t);
+    			append_dev(main, section);
     		},
     		p: function update(ctx, [dirty]) {
     			if (dirty & /*elements*/ 1) {
-    				each_value = Array(200);
+    				each_value = Array(1);
     				validate_each_argument(each_value);
     				let i;
 
@@ -399,7 +422,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(main, null);
+    						each_blocks[i].m(main, t);
     					}
     				}
 
@@ -437,9 +460,9 @@ var app = (function () {
     			new Wonderscroll(element,
     			[
     					{
-    						params: { edge: "both", from: 0.5, to: 0 },
+    						params: { edge: "both", from: 0.25, to: 0 },
     						mutators: {
-    							y: { from: 0, to: -100, ease: "InQuad" },
+    							y: { from: 0, to: -300, ease: "InQuad" },
     							backgroundColor: {
     								mode: "rgba",
     								from: "#123123",
@@ -448,10 +471,10 @@ var app = (function () {
     						}
     					},
     					{
-    						params: { edge: "top", from: 1, to: 0.5 },
+    						params: { edge: "top", from: 1, to: 0.75 },
     						mutators: {
     							y: {
-    								from: 100,
+    								from: -200,
     								to: 0,
     								ease: "OutQuad",
     								unit: "%"
@@ -470,7 +493,8 @@ var app = (function () {
     							}
     						}
     					}
-    				]);
+    				],
+    			{ debug: true });
     		});
     	});
 
