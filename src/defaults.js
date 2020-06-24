@@ -19,8 +19,6 @@ const ObserverDefaults = {
 		from: 1,
 		to: 0,
 		edge: 'top',
-		updateOnInit: true,
-		updateOnRootResize: true,
 		direction: 'vertical'
 	}
 }
@@ -30,7 +28,9 @@ const WonderscrollDefaults = {
 	params: {
         init: true,
         observerNamePrefix: 'observer',
-        defaultElement: '.wonderscroll',
+		defaultElement: '.wonderscroll',
+		updateOnInit: true,
+		updateOnResize: true,
 	}
 }
 

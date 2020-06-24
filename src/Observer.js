@@ -20,14 +20,7 @@ class Observer {
             progress: 0
         };
 
-        this.isDone = true;
-        this.isIntersecting = false;
-        this.isListeningScroll = false;
-        this.scrollHandler = this._handleScroll.bind(this);
-        this.raf = 0;
-        
-        this.intersectionObserver = new IntersectionObserver((e) => this._handleIntersecting(!!e[0].isIntersecting));
-        this.intersectionObserver.observe(this.element);
+        w.isDone = false;
 
         w.init();
     }
@@ -35,27 +28,12 @@ class Observer {
     get progress() {
         const w = this;
         const progress = Math.min(Math.max((Math.round(w.scroll.current) - w.scroll.start) / w.scroll.diff, 0), 1);
+        w.element.setAttribute(`data-progress-${w.params.name}`, progress);
         return progress;
     }
 
-    update(key) {
+    applyMutations(styles) {
         const w = this;
-        if (key !== undefined && key instanceof String) {
-            w.getMutation(key);
-        } else {
-            w.getMutations();
-        }
-        w.applyMutations();
-    }
-
-    applyMutations() {
-        const w = this;
-        const styles = {};
-        _.each(w.mutators, key => {
-            const mutator = w.mutators[key];
-            styles[mutator.cssProperty] = styles[mutator.cssProperty] || [];
-            styles[mutator.cssProperty].push(mutator.style);
-        });
         _.each(styles, cssProperty => {
             const style = styles[cssProperty].join(' ');
             w.element.style[cssProperty] = style;
@@ -63,8 +41,25 @@ class Observer {
         w.isDone = w.progress == 0 || w.progress == 1;
     }
 
+    getMutationsStyles() {
+        const w = this;
+        const styles = {};
+        _.each(w.mutators, key => {
+            const mutator = w.mutators[key];
+            styles[key] = {
+                cssProperty: mutator.cssProperty,
+                cssValue: mutator.style
+            }
+        });
+        return styles;
+    }
+
     getMutation(key) {
         const w = this;
+        const progress = w.progress;
+        if (progress > 0 && progress < 1) {
+            w.isDone = false;
+        }
         w.mutators[key].tween(w.progress);
     }
 
@@ -105,10 +100,6 @@ class Observer {
         const w = this;
         w.addMutators(w.queue.mutators);
         w.queue.mutators = {};
-
-        if (!!w.params.updateOnInit) {
-            w.update();    
-        }
     }
 
     _initScroll() {
@@ -130,32 +121,7 @@ class Observer {
             end: end,
             diff: end - start
         }
-    }
-
-    _handleIntersecting(value) {
-        const w = this;
-        const isIntersecting = !!value;
-        if (isIntersecting && !w.isListeningScroll) {
-            w.isListeningScroll = true;
-            window.addEventListener('scroll', w.scrollHandler);
-        }
-        w.isIntersecting = isIntersecting;
-    }
-
-    _handleScroll() {
-        const w = this;
-        w.scroll.current = window.scrollY;
-        const progress = w.progress
-        
-        if ((progress > 0 && progress < 1) || !w.isDone) {
-            window.cancelAnimationFrame(w.raf);
-            w.raf = window.requestAnimationFrame(w.update.bind(w));
-        }
-        else if (!w.isIntersecting) {
-            w.isListeningScroll = false;
-            window.removeEventListener('scroll', w.scrollHandler);
-        }
-    }   
+    }  
 }
 
 export default Observer;

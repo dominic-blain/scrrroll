@@ -169,8 +169,6 @@ var ObserverDefaults = {
     from: 1,
     to: 0,
     edge: 'top',
-    updateOnInit: true,
-    updateOnRootResize: true,
     direction: 'vertical'
   }
 };
@@ -179,7 +177,9 @@ var WonderscrollDefaults = {
   params: {
     init: true,
     observerNamePrefix: 'observer',
-    defaultElement: '.wonderscroll'
+    defaultElement: '.wonderscroll',
+    updateOnInit: true,
+    updateOnResize: true
   }
 };
 
@@ -230,10 +230,10 @@ var _ = {
     return value instanceof Object && value !== null;
   },
   isPlainObject: function isPlainObject(value) {
-    return !!value.constructor && value.constructor === Object;
+    return !!value && !!value.constructor && value.constructor === Object;
   },
   isPlainArray: function isPlainArray(value) {
-    return !!value.constructor && value.constructor === Array;
+    return !!value && !!value.constructor && value.constructor === Array;
   }
 };
 
@@ -363,7 +363,8 @@ var TransformMutator = /*#__PURE__*/function (_DefaultMutator) {
     key: "style",
     get: function get() {
       var w = this;
-      var format = TransformMutator.format[w.key];
+      var customFormat = TransformMutator.format[w.key];
+      var format = !!customFormat ? customFormat : "".concat(w.key, "($)");
       return format.replace('$', w.value + w.params.unit);
     }
   }]);
@@ -375,8 +376,7 @@ TransformMutator.format = {
   y: 'translateY($)',
   x: 'translateX($)',
   z: 'translateZ($)',
-  r: 'rotate($)',
-  scale: 'scale($)'
+  r: 'rotate($)'
 };
 
 var ColorMutator = /*#__PURE__*/function (_DefaultMutator) {
@@ -563,8 +563,12 @@ var Mutator = function Mutator(element, key, params) {
 
 Mutator.mutatorTypes = {
   y: 'transform',
+  translateY: 'transform',
   x: 'transform',
+  translateX: 'transform',
   z: 'transform',
+  translateZ: 'transform',
+  r: 'transform',
   rotate: 'transform',
   scale: 'transform',
   color: 'color',
@@ -574,8 +578,6 @@ Mutator.mutatorTypes = {
 
 var Observer = /*#__PURE__*/function () {
   function Observer(element, mutators, params) {
-    var _this = this;
-
     _classCallCheck(this, Observer);
 
     var w = this;
@@ -592,42 +594,14 @@ var Observer = /*#__PURE__*/function () {
       diff: undefined,
       progress: 0
     };
-    this.isDone = true;
-    this.isIntersecting = false;
-    this.isListeningScroll = false;
-    this.scrollHandler = this._handleScroll.bind(this);
-    this.raf = 0;
-    this.intersectionObserver = new IntersectionObserver(function (e) {
-      return _this._handleIntersecting(!!e[0].isIntersecting);
-    });
-    this.intersectionObserver.observe(this.element);
+    w.isDone = false;
     w.init();
   }
 
   _createClass(Observer, [{
-    key: "update",
-    value: function update(key) {
-      var w = this;
-
-      if (key !== undefined && key instanceof String) {
-        w.getMutation(key);
-      } else {
-        w.getMutations();
-      }
-
-      w.applyMutations();
-    }
-  }, {
     key: "applyMutations",
-    value: function applyMutations() {
+    value: function applyMutations(styles) {
       var w = this;
-      var styles = {};
-
-      _.each(w.mutators, function (key) {
-        var mutator = w.mutators[key];
-        styles[mutator.cssProperty] = styles[mutator.cssProperty] || [];
-        styles[mutator.cssProperty].push(mutator.style);
-      });
 
       _.each(styles, function (cssProperty) {
         var style = styles[cssProperty].join(' ');
@@ -637,9 +611,31 @@ var Observer = /*#__PURE__*/function () {
       w.isDone = w.progress == 0 || w.progress == 1;
     }
   }, {
+    key: "getMutationsStyles",
+    value: function getMutationsStyles() {
+      var w = this;
+      var styles = {};
+
+      _.each(w.mutators, function (key) {
+        var mutator = w.mutators[key];
+        styles[key] = {
+          cssProperty: mutator.cssProperty,
+          cssValue: mutator.style
+        };
+      });
+
+      return styles;
+    }
+  }, {
     key: "getMutation",
     value: function getMutation(key) {
       var w = this;
+      var progress = w.progress;
+
+      if (progress > 0 && progress < 1) {
+        w.isDone = false;
+      }
+
       w.mutators[key].tween(w.progress);
     }
   }, {
@@ -690,10 +686,6 @@ var Observer = /*#__PURE__*/function () {
       var w = this;
       w.addMutators(w.queue.mutators);
       w.queue.mutators = {};
-
-      if (!!w.params.updateOnInit) {
-        w.update();
-      }
     }
   }, {
     key: "_initScroll",
@@ -714,38 +706,11 @@ var Observer = /*#__PURE__*/function () {
       };
     }
   }, {
-    key: "_handleIntersecting",
-    value: function _handleIntersecting(value) {
-      var w = this;
-      var isIntersecting = !!value;
-
-      if (isIntersecting && !w.isListeningScroll) {
-        w.isListeningScroll = true;
-        window.addEventListener('scroll', w.scrollHandler);
-      }
-
-      w.isIntersecting = isIntersecting;
-    }
-  }, {
-    key: "_handleScroll",
-    value: function _handleScroll() {
-      var w = this;
-      w.scroll.current = window.scrollY;
-      var progress = w.progress;
-
-      if (progress > 0 && progress < 1 || !w.isDone) {
-        window.cancelAnimationFrame(w.raf);
-        w.raf = window.requestAnimationFrame(w.update.bind(w));
-      } else if (!w.isIntersecting) {
-        w.isListeningScroll = false;
-        window.removeEventListener('scroll', w.scrollHandler);
-      }
-    }
-  }, {
     key: "progress",
     get: function get() {
       var w = this;
       var progress = Math.min(Math.max((Math.round(w.scroll.current) - w.scroll.start) / w.scroll.diff, 0), 1);
+      w.element.setAttribute("data-progress-".concat(w.params.name), progress);
       return progress;
     }
   }]);
@@ -784,7 +749,14 @@ var Wonderscroll = /*#__PURE__*/function () {
     };
     w.element = undefined;
     w.observers = [];
+    w.raf = 0;
+    w.scrollPos = 0;
+    w.scrollHandler = w._handleScroll.bind(this);
+    w.isInitiating = false;
     w.isInited = false;
+    w.isOnScreen = false;
+    w.isListeningScroll = false;
+    w.isActive = true;
 
     if (!!w.params.init) {
       var initElement = w.init();
@@ -796,10 +768,80 @@ var Wonderscroll = /*#__PURE__*/function () {
   }
 
   _createClass(Wonderscroll, [{
+    key: "update",
+    value: function update(key) {
+      var w = this; // Get mutations data
+
+      w.getMutations(); // Apply mutations
+
+      if (!!w.isActive) {
+        window.cancelAnimationFrame(w.raf);
+        w.raf = window.requestAnimationFrame(w.applyMutations.bind(w));
+      } else if (!w.isOnScreen) {
+        w.isListeningScroll = false;
+        window.removeEventListener('scroll', w.scrollHandler);
+      }
+    }
+  }, {
+    key: "getMutations",
+    value: function getMutations() {
+      var w = this;
+
+      _.each(w.observers, function (observer) {
+        observer.scroll.current = w.scrollPos;
+        observer.getMutations();
+
+        if (!observer.isDone) {
+          w.isActive = true;
+        }
+      });
+    }
+  }, {
+    key: "applyMutations",
+    value: function applyMutations() {
+      var w = this;
+      var styles = {};
+      var cssStyles = {};
+      var hasActiveObservers = false;
+
+      _.each(w.observers, function (observer) {
+        var progress = observer.progress;
+        var isDone = progress == 0 || progress == 1;
+        var observerStyles = observer.getMutationsStyles();
+
+        _.each(observerStyles, function (key) {
+          var style = observerStyles[key];
+
+          if (!styles[key] || !isDone) {
+            styles[key] = style;
+          }
+        });
+
+        observer.isDone = isDone;
+
+        if (!isDone) {
+          hasActiveObservers = true;
+        }
+      });
+
+      _.each(styles, function (key) {
+        var style = styles[key];
+        cssStyles[style.cssProperty] = _.isPlainArray(cssStyles[style.cssProperty]) ? cssStyles[style.cssProperty] : [];
+        cssStyles[style.cssProperty].push(style.cssValue);
+      });
+
+      _.each(cssStyles, function (cssProperty) {
+        var style = cssStyles[cssProperty].join(' ');
+        w.element.style[cssProperty] = style;
+      });
+
+      w.isActive = hasActiveObservers;
+    }
+  }, {
     key: "addObserver",
     value: function addObserver(mutators, params) {
       var w = this;
-      var target = w.isInited ? w.observers : w.queue.observers;
+      var target = !!w.isInited || !!w.isInitiating ? w.observers : w.queue.observers;
       var hasCustomName = !!params && !!params.name && typeof params.name === 'string';
       var genericName = String(w.params.observerNamePrefix) + w.observers.length;
       params.name = hasCustomName ? params.name : genericName;
@@ -816,9 +858,28 @@ var Wonderscroll = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "_handleIntersecting",
+    value: function _handleIntersecting(e) {
+      var w = this;
+      w.isOnScreen = !!e[0].isIntersecting;
+
+      if (!!w.isOnScreen && !w.isListeningScroll) {
+        w.isListeningScroll = true;
+        window.addEventListener('scroll', w.scrollHandler);
+      }
+    }
+  }, {
+    key: "_handleScroll",
+    value: function _handleScroll() {
+      var w = this;
+      w.scrollPos = window.scrollY;
+      w.update();
+    }
+  }, {
     key: "init",
     value: function init() {
       var w = this;
+      w.isInitiating = true;
 
       w._initElement();
 
@@ -832,6 +893,15 @@ var Wonderscroll = /*#__PURE__*/function () {
 
       w._initObservers();
 
+      w.intersectionObserver = new IntersectionObserver(function (e) {
+        return w._handleIntersecting(e);
+      });
+      w.intersectionObserver.observe(w.element);
+
+      if (!!w.params.updateOnInit) {
+        w.update();
+      }
+
       w.isInited = true;
     }
   }, {
@@ -842,7 +912,7 @@ var Wonderscroll = /*#__PURE__*/function () {
       var element = _.queryElement(w.queue.element);
 
       w.element = element;
-      w.queue.element = undefined;
+      w.queue.element = null;
     }
   }, {
     key: "_initObservers",
@@ -850,6 +920,21 @@ var Wonderscroll = /*#__PURE__*/function () {
       var w = this;
       w.addObservers(w.queue.observers);
       w.queue.observers = [];
+    }
+  }, {
+    key: "activeObservers",
+    get: function get() {
+      var w = this;
+      var observers = [];
+
+      _.each(w.observers, function (observer) {
+        if (!observer.isDone) {
+          observers.push(observer);
+        }
+      });
+
+      w.isActive = !!observers.length && observers.length > 0;
+      return observers;
     }
   }]);
 

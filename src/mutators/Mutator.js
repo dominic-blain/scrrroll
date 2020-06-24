@@ -19,8 +19,12 @@ class Mutator {
 
 Mutator.mutatorTypes = {
     y: 'transform',
+    translateY: 'transform',
     x: 'transform',
+    translateX: 'transform',
     z: 'transform',
+    translateZ: 'transform',
+    r: 'transform',
     rotate: 'transform',
     scale: 'transform',
     color: 'color',

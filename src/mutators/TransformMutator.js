@@ -9,7 +9,8 @@ class TransformMutator extends DefaultMutator {
 
     get style() {
         const w = this;
-        const format = TransformMutator.format[w.key];
+        const customFormat = TransformMutator.format[w.key];
+        const format = !!customFormat ? customFormat : `${w.key}($)`;
         return format.replace('$', w.value + w.params.unit);
     }
 }
@@ -18,8 +19,7 @@ TransformMutator.format = {
     y: 'translateY($)',
     x: 'translateX($)',
     z: 'translateZ($)',
-    r: 'rotate($)',
-    scale: 'scale($)'
+    r: 'rotate($)'
 }
 
 export default TransformMutator;

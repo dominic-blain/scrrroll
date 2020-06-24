@@ -40,10 +40,10 @@ const _ = {
         return value instanceof Object && value !== null;
     },
     isPlainObject(value) {
-        return !!value.constructor && value.constructor === Object;
+        return !!value && !!value.constructor && value.constructor === Object;
     },
     isPlainArray(value) {
-        return !!value.constructor && value.constructor === Array;
+        return !!value && !!value.constructor && value.constructor === Array;
     }
 }
 
