@@ -73,7 +73,6 @@ class Observer {
         _.each(w.mutators, key => {
             w.getMutation(key);
         });
-        w.applyMutations();
     }
 
     addMutator(key, params) {

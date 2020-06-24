@@ -650,8 +650,6 @@ var Observer = /*#__PURE__*/function () {
       _.each(w.mutators, function (key) {
         w.getMutation(key);
       });
-
-      w.applyMutations();
     }
   }, {
     key: "addMutator",

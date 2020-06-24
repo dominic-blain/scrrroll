@@ -311,7 +311,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (27:1) {#each Array(200) as _, i}
+    // (50:1) {#each Array(200) as _, i}
     function create_each_block(ctx) {
     	let section;
 
@@ -319,7 +319,7 @@ var app = (function () {
     		c: function create() {
     			section = element("section");
     			attr_dev(section, "class", "wonderscroll svelte-1qt7czs");
-    			add_location(section, file, 27, 2, 395);
+    			add_location(section, file, 50, 2, 673);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, section, anchor);
@@ -333,7 +333,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(27:1) {#each Array(200) as _, i}",
+    		source: "(50:1) {#each Array(200) as _, i}",
     		ctx
     	});
 
@@ -359,7 +359,7 @@ var app = (function () {
     			}
 
     			attr_dev(main, "class", "svelte-1qt7czs");
-    			add_location(main, file, 25, 0, 358);
+    			add_location(main, file, 48, 0, 636);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -395,17 +395,36 @@ var app = (function () {
     	let elements;
 
     	onMount(() => {
-    		elements = new Wonderscroll({
-    				params: { edge: "both" },
-    				mutators: {
-    					x: { from: 100, to: -100, ease: "InQuad" },
-    					backgroundColor: {
-    						mode: "rgba",
-    						from: "#123123",
-    						to: "rgba(255, 0, 150, 0.5)"
+    		elements = new Wonderscroll([
+    				{
+    					params: { edge: "top", from: 0.2, to: 0 },
+    					mutators: {
+    						y: { from: 0, to: -100, ease: "InQuad" },
+    						backgroundColor: {
+    							mode: "rgba",
+    							from: "#123123",
+    							to: "rgba(255, 0, 150, 0.5)"
+    						}
+    					}
+    				},
+    				{
+    					params: { edge: "end", from: 1, to: 0.8 },
+    					mutators: {
+    						r: {
+    							from: 9,
+    							to: 0,
+    							unit: "deg",
+    							ease: "QuadOut"
+    						},
+    						opacity: {
+    							from: 0,
+    							to: 1,
+    							unit: "",
+    							ease: "QuadOut"
+    						}
     					}
     				}
-    			});
+    			]);
     	});
 
     	const writable_props = [];

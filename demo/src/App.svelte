@@ -4,13 +4,15 @@
 	let elements;
 
 	onMount(() => {
-		elements = new Wonderscroll({
+		elements = new Wonderscroll([{
 			params: {
-				edge: 'both'
+				edge: 'top',
+				from: 0.2,
+				to: 0
 			},
 			mutators: {
-				x: {
-					from: 100,
+				y: {
+					from: 0,
 					to: -100,
 					ease: 'InQuad'
 				},
@@ -20,7 +22,28 @@
 					to: 'rgba(255, 0, 150, 0.5)'
 				}
 			}
-		});
+		},
+		{
+			params: {
+				edge: 'end',
+				from: 1,
+				to: 0.8
+			},
+			mutators: {
+				r: {
+					from: 9,
+					to: 0,
+					unit: 'deg',
+					ease: 'QuadOut'
+				},
+				opacity: {
+					from: 0,
+					to: 1,
+					unit: '',
+					ease: 'QuadOut'
+				}
+			}
+		}])
 	});
 </script>
 <main>
