@@ -217,6 +217,8 @@ var _ = {
 
         if (el === null || el.length === 0) {
           throw "Element Not Found: Could not find Element with ".concat(element, " selector.");
+        } else if (el.length === 1) {
+          el = el[0];
         }
       } else {
         throw 'Invalid Element Property: Should be HTMLElement or valid selector.';

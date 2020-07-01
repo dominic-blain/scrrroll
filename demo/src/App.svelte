@@ -1,82 +1,141 @@
 <script>
 	import { onMount } from 'svelte';
 
-	const elements = [];
-
 	onMount(() => {
-		elements.forEach(element => {
-			new Wonderscroll(element, [{
-				params: {
-					edge: 'both',
-					from: 0.25,
-					to: 0
-				},
-				mutators: {
-					y: {
-						from: 0,
-						to: -300,
-						ease: 'InQuad'
-					},
-					backgroundColor: {
-						mode: 'rgba',
-						from: '#123123',
-						to: 'rgba(255, 0, 150, 0.5)'
-					}
-				}
+		new Wonderscroll('h1, small', {
+			params: {
+				edge: 'end',
+				from: 0.25,
+				to: 0
 			},
-			{
-				params: {
-					edge: 'top',
-					from: 1,
-					to: 0.75
+			mutators: {
+				y: {
+					from: 0,
+					to: -100,
+					ease: 'InQuad'
 				},
-				mutators: {
-					y: {
-						from: -200,
-						to: 0,
-						ease: 'OutQuad',
-						unit: "%"
-					},
-					r: {
-						from: 9,
-						to: 0,
-						unit: 'deg',
-						ease: 'QuadOut'
-					},
-					opacity: {
-						from: 0,
-						to: 1,
-						unit: '',
-						ease: 'QuadOut'
-					}
+				scale: {
+					from: 1,
+					to: 2,
+					unit: '',
+					ease: 'InQuad'
+				},
+				color: {
+					from: '#fe2b26',
+					to: '#264ffe'
 				}
-			}], {
-				debug: true
-			});
+			}
+		}, {
+			debug: true
 		});
 	});
 </script>
+
+<aside>
+<ul>
+	<li>
+		<a href="#introduction">Introduction</a>
+		<ul>
+			<li><a href="#why-wonderscroll">Why Wonderscroll?</a></li>
+			<li><a href="#core-concepts">Core Concepts</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#get-started">Get Started</a>
+		<ul>
+			<li><a href="#installation">Installation</a></li>
+			<li><a href="#basic-usage">Basic Usage</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#api">API</a>
+		<ul>
+			<li><a href="#wonderscroll">Wonderscroll</a></li>
+			<li><a href="#observer">Observer</a></li>
+			<li><a href="#mutator">Mutator</a></li>
+			<li><a href="#default-mutator">Default Mutator</a></li>
+			<li><a href="#transform-mutator">Transform Mutator</a></li>
+			<li><a href="#color-mutator">Color Mutator</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#demos">Demos</a>
+		<ul>
+			<li>TODO</li>
+		</ul>
+	</li>
+</ul>
+</aside>
+
 <main>
-	{#each Array(1) as _, i}
-		<section bind:this={elements[i]} class="wonderscroll"></section>
-	{/each}
-	<section></section>
+	<header>
+		<h1>Wonderscroll</h1>
+		<small>0.0.1</small>
+	</header>
+	
+	<section id="introduction">
+		<h2>Introduction</h2>
+		<p class="emphasis">Wonderscroll is yet another javascript library for animating css properties based on scroll values. <strong>It is in early stage and many issues can still arise.</strong></p>
+		<h3 id="why-wonderscroll">Why Wonderscroll</h3>
+		<p>Why not? This project exists mostly as a learning project, but its aim is to be usable in production. It is used to tween css properties between a start and finish value. It is not used to trigger css animations or transitions.</p>
+		<h3 id="core-concepts">Core Concepts</h3>
+		<p>Their are 3 main objects: <strong>Wonderscroll, Observer and Mutator.</strong> Those three work together in order to efficiently modify an element' style. 
+		The Wonderscroll object is the conductor and manages its own observer(s) and their related mutator(s). 
+		Observers can set their own start and end point in relation to the screen position of the element and they know which mutators to apply. 
+		They track progress between those points. Mutators are responsible for the tweening logic of all properties. They get the progress from their observer and apply easing (if applicable) to output final property value.</p>
+	</section>
+
+	<footer></footer>
 </main>
 
+
 <style>
-	main {
-		margin: 200vh 0;
-		width: 90vw;
-		display: flex;
-		flex-wrap: wrap;
+	header {
+		margin: 30vh 0;
+	}
+	h1 {
+		font-family: 'Bangers';
+		font-weight: 400;
+		font-size: 48rem;
+		text-align: center;
+		margin: 0;
+		text-shadow: 3px 2px 0px var(--accent-bg-color);
+	}
+	small {
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 1rem;
+		text-align: center;
+		font-weight: bold;
+		display: block;
+		margin-top: 6rem;
+	}
+	aside {
+		border-right: 1px solid var(--main-border-color);
 	}
 	section {
-		width: 20%;
-		height: 30vh;
-		background-color: bisque;
+		padding: 0 60rem;
+		margin-top: 100rem;
+		border-top: 1px solid var(--main-border-color);
 	}
-	section:nth-child(odd) {
-		height: 25vh;
-		background-color: beige;
+	h2 {
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 1rem;
+		margin: 0;
+		transform: translateY(-50%);
+		background-color: var(--main-bg-color);
+		display: inline-block;
+		padding: 6rem 12rem;
+		position: relative;
+		left: -12rem;
 	}
+	h3 {
+		font-size: 24rem;
+	}
+
+	footer {
+		min-height: 100vh;
+	}
+	
 </style>

@@ -26,6 +26,8 @@ const _ = {
                 el = document.querySelectorAll(element);
                 if (el === null || el.length === 0) {
                     throw `Element Not Found: Could not find Element with ${element} selector.`;
+                } else if (el.length === 1) {
+                    el = el[0];
                 }
             }
             else {
