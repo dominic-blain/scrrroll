@@ -305,6 +305,7 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let aside;
+    	let nav;
     	let ul4;
     	let li2;
     	let a0;
@@ -451,6 +452,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			aside = element("aside");
+    			nav = element("nav");
     			ul4 = element("ul");
     			li2 = element("li");
     			a0 = element("a");
@@ -635,142 +637,145 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "The End";
     			attr_dev(a0, "href", "#introduction");
-    			add_location(a0, file, 36, 2, 449);
+    			add_location(a0, file, 81, 4, 1036);
     			attr_dev(a1, "href", "#why-wonderscroll");
-    			add_location(a1, file, 38, 7, 504);
-    			add_location(li0, file, 38, 3, 500);
+    			add_location(a1, file, 83, 9, 1095);
+    			add_location(li0, file, 83, 5, 1091);
     			attr_dev(a2, "href", "#core-concepts");
-    			add_location(a2, file, 39, 7, 566);
-    			add_location(li1, file, 39, 3, 562);
-    			add_location(ul0, file, 37, 2, 492);
-    			add_location(li2, file, 35, 1, 442);
+    			add_location(a2, file, 84, 9, 1159);
+    			add_location(li1, file, 84, 5, 1155);
+    			add_location(ul0, file, 82, 4, 1081);
+    			add_location(li2, file, 80, 3, 1027);
     			attr_dev(a3, "href", "#get-started");
-    			add_location(a3, file, 43, 2, 637);
+    			add_location(a3, file, 88, 4, 1238);
     			attr_dev(a4, "href", "#installation");
-    			add_location(a4, file, 45, 7, 690);
-    			add_location(li3, file, 45, 3, 686);
+    			add_location(a4, file, 90, 9, 1295);
+    			add_location(li3, file, 90, 5, 1291);
     			attr_dev(a5, "href", "#basic-usage");
-    			add_location(a5, file, 46, 7, 743);
-    			add_location(li4, file, 46, 3, 739);
-    			add_location(ul1, file, 44, 2, 678);
-    			add_location(li5, file, 42, 1, 630);
+    			add_location(a5, file, 91, 9, 1350);
+    			add_location(li4, file, 91, 5, 1346);
+    			add_location(ul1, file, 89, 4, 1281);
+    			add_location(li5, file, 87, 3, 1229);
     			attr_dev(a6, "href", "#api");
-    			add_location(a6, file, 50, 2, 810);
+    			add_location(a6, file, 95, 4, 1425);
     			attr_dev(a7, "href", "#wonderscroll");
-    			add_location(a7, file, 52, 7, 847);
-    			add_location(li6, file, 52, 3, 843);
+    			add_location(a7, file, 97, 9, 1466);
+    			add_location(li6, file, 97, 5, 1462);
     			attr_dev(a8, "href", "#observer");
-    			add_location(a8, file, 53, 7, 900);
-    			add_location(li7, file, 53, 3, 896);
+    			add_location(a8, file, 98, 9, 1521);
+    			add_location(li7, file, 98, 5, 1517);
     			attr_dev(a9, "href", "#mutator");
-    			add_location(a9, file, 54, 7, 945);
-    			add_location(li8, file, 54, 3, 941);
+    			add_location(a9, file, 99, 9, 1568);
+    			add_location(li8, file, 99, 5, 1564);
     			attr_dev(a10, "href", "#default-mutator");
-    			add_location(a10, file, 55, 7, 988);
-    			add_location(li9, file, 55, 3, 984);
+    			add_location(a10, file, 100, 9, 1613);
+    			add_location(li9, file, 100, 5, 1609);
     			attr_dev(a11, "href", "#transform-mutator");
-    			add_location(a11, file, 56, 7, 1047);
-    			add_location(li10, file, 56, 3, 1043);
+    			add_location(a11, file, 101, 9, 1674);
+    			add_location(li10, file, 101, 5, 1670);
     			attr_dev(a12, "href", "#color-mutator");
-    			add_location(a12, file, 57, 7, 1110);
-    			add_location(li11, file, 57, 3, 1106);
-    			add_location(ul2, file, 51, 2, 835);
-    			add_location(li12, file, 49, 1, 803);
+    			add_location(a12, file, 102, 9, 1739);
+    			add_location(li11, file, 102, 5, 1735);
+    			add_location(ul2, file, 96, 4, 1452);
+    			add_location(li12, file, 94, 3, 1416);
     			attr_dev(a13, "href", "#demos");
-    			add_location(a13, file, 61, 2, 1181);
-    			add_location(li13, file, 63, 3, 1218);
-    			add_location(ul3, file, 62, 2, 1210);
-    			add_location(li14, file, 60, 1, 1174);
-    			add_location(ul4, file, 34, 0, 436);
-    			attr_dev(aside, "class", "svelte-1cj4lql");
-    			add_location(aside, file, 33, 0, 428);
-    			attr_dev(h1, "class", "svelte-1cj4lql");
-    			add_location(h1, file, 71, 2, 1282);
-    			attr_dev(small, "class", "svelte-1cj4lql");
-    			add_location(small, file, 72, 2, 1306);
-    			attr_dev(header, "class", "svelte-1cj4lql");
-    			add_location(header, file, 70, 1, 1271);
-    			attr_dev(h20, "class", "svelte-1cj4lql");
-    			add_location(h20, file, 76, 2, 1392);
-    			add_location(strong0, file, 77, 122, 1536);
+    			add_location(a13, file, 106, 4, 1818);
+    			add_location(li13, file, 108, 5, 1859);
+    			add_location(ul3, file, 107, 4, 1849);
+    			add_location(li14, file, 105, 3, 1809);
+    			add_location(ul4, file, 79, 2, 1019);
+    			attr_dev(nav, "class", "svelte-yw3wtn");
+    			add_location(nav, file, 78, 1, 1011);
+    			attr_dev(aside, "class", "svelte-yw3wtn");
+    			add_location(aside, file, 77, 0, 1002);
+    			attr_dev(h1, "class", "svelte-yw3wtn");
+    			add_location(h1, file, 117, 2, 1937);
+    			attr_dev(small, "class", "svelte-yw3wtn");
+    			add_location(small, file, 118, 2, 1961);
+    			attr_dev(header, "class", "svelte-yw3wtn");
+    			add_location(header, file, 116, 1, 1926);
+    			attr_dev(h20, "class", "svelte-yw3wtn");
+    			add_location(h20, file, 122, 2, 2047);
+    			add_location(strong0, file, 123, 122, 2191);
     			attr_dev(p0, "class", "emphasis");
-    			add_location(p0, file, 77, 2, 1416);
+    			add_location(p0, file, 123, 2, 2071);
     			attr_dev(h30, "id", "why-wonderscroll");
-    			attr_dev(h30, "class", "svelte-1cj4lql");
-    			add_location(h30, file, 78, 2, 1613);
-    			add_location(p1, file, 79, 2, 1663);
+    			attr_dev(h30, "class", "svelte-yw3wtn");
+    			add_location(h30, file, 124, 2, 2268);
+    			add_location(p1, file, 125, 2, 2318);
     			attr_dev(h31, "id", "core-concepts");
-    			attr_dev(h31, "class", "svelte-1cj4lql");
-    			add_location(h31, file, 80, 2, 1900);
-    			add_location(strong1, file, 81, 31, 1973);
-    			add_location(p2, file, 81, 2, 1944);
+    			attr_dev(h31, "class", "svelte-yw3wtn");
+    			add_location(h31, file, 126, 2, 2555);
+    			add_location(strong1, file, 127, 31, 2628);
+    			add_location(p2, file, 127, 2, 2599);
     			attr_dev(section0, "id", "introduction");
-    			attr_dev(section0, "class", "wonderscroll svelte-1cj4lql");
-    			add_location(section0, file, 75, 1, 1341);
-    			attr_dev(h21, "class", "svelte-1cj4lql");
-    			add_location(h21, file, 88, 2, 2614);
+    			attr_dev(section0, "class", "wonderscroll svelte-yw3wtn");
+    			add_location(section0, file, 121, 1, 1996);
+    			attr_dev(h21, "class", "svelte-yw3wtn");
+    			add_location(h21, file, 134, 2, 3269);
     			attr_dev(h32, "id", "installation");
-    			attr_dev(h32, "class", "svelte-1cj4lql");
-    			add_location(h32, file, 89, 2, 2637);
-    			add_location(code0, file, 90, 134, 2811);
-    			add_location(p3, file, 90, 2, 2679);
+    			attr_dev(h32, "class", "svelte-yw3wtn");
+    			add_location(h32, file, 135, 2, 3292);
+    			add_location(code0, file, 136, 134, 3466);
+    			add_location(p3, file, 136, 2, 3334);
     			attr_dev(h33, "id", "basic-usage");
-    			attr_dev(h33, "class", "svelte-1cj4lql");
-    			add_location(h33, file, 91, 2, 2843);
-    			add_location(p4, file, 92, 2, 2883);
+    			attr_dev(h33, "class", "svelte-yw3wtn");
+    			add_location(h33, file, 137, 2, 3498);
+    			add_location(p4, file, 138, 2, 3538);
     			attr_dev(span0, "class", "keyword");
-    			add_location(span0, file, 93, 13, 3043);
+    			add_location(span0, file, 139, 13, 3698);
     			attr_dev(span1, "class", "operator");
-    			add_location(span1, file, 93, 46, 3076);
+    			add_location(span1, file, 139, 46, 3731);
     			attr_dev(span2, "class", "keyword");
-    			add_location(span2, file, 93, 78, 3108);
+    			add_location(span2, file, 139, 78, 3763);
     			attr_dev(span3, "class", "funcName");
-    			add_location(span3, file, 93, 111, 3141);
+    			add_location(span3, file, 139, 111, 3796);
     			attr_dev(span4, "class", "property");
-    			add_location(span4, file, 94, 1, 3191);
+    			add_location(span4, file, 140, 1, 3846);
     			attr_dev(span5, "class", "operator");
-    			add_location(span5, file, 94, 39, 3229);
+    			add_location(span5, file, 140, 39, 3884);
     			attr_dev(span6, "class", "property");
-    			add_location(span6, file, 95, 2, 3269);
+    			add_location(span6, file, 141, 2, 3924);
     			attr_dev(span7, "class", "operator");
-    			add_location(span7, file, 95, 39, 3306);
+    			add_location(span7, file, 141, 39, 3961);
     			attr_dev(span8, "class", "property");
-    			add_location(span8, file, 96, 3, 3347);
+    			add_location(span8, file, 142, 3, 4002);
     			attr_dev(span9, "class", "operator");
-    			add_location(span9, file, 96, 37, 3381);
+    			add_location(span9, file, 142, 37, 4036);
     			attr_dev(span10, "class", "number");
-    			add_location(span10, file, 96, 69, 3413);
+    			add_location(span10, file, 142, 69, 4068);
     			attr_dev(span11, "class", "property");
-    			add_location(span11, file, 97, 3, 3447);
+    			add_location(span11, file, 143, 3, 4102);
     			attr_dev(span12, "class", "operator");
-    			add_location(span12, file, 97, 35, 3479);
+    			add_location(span12, file, 143, 35, 4134);
     			attr_dev(span13, "class", "number");
-    			add_location(span13, file, 97, 67, 3511);
+    			add_location(span13, file, 143, 67, 4166);
     			attr_dev(span14, "class", "property");
-    			add_location(span14, file, 98, 3, 3545);
+    			add_location(span14, file, 144, 3, 4200);
     			attr_dev(span15, "class", "operator");
-    			add_location(span15, file, 98, 37, 3579);
+    			add_location(span15, file, 144, 37, 4234);
     			attr_dev(span16, "class", "string");
-    			add_location(span16, file, 98, 69, 3611);
-    			add_location(code1, file, 93, 7, 3037);
-    			add_location(pre, file, 93, 2, 3032);
-    			add_location(code2, file, 104, 54, 3742);
-    			add_location(p5, file, 104, 2, 3690);
+    			add_location(span16, file, 144, 69, 4266);
+    			add_location(code1, file, 139, 7, 3692);
+    			add_location(pre, file, 139, 2, 3687);
+    			add_location(code2, file, 150, 54, 4397);
+    			add_location(p5, file, 150, 2, 4345);
     			attr_dev(section1, "id", "get-started");
-    			attr_dev(section1, "class", "svelte-1cj4lql");
-    			add_location(section1, file, 87, 1, 2585);
-    			attr_dev(div, "class", "svelte-1cj4lql");
-    			add_location(div, file, 108, 2, 4062);
-    			attr_dev(footer, "class", "svelte-1cj4lql");
-    			add_location(footer, file, 107, 1, 4051);
-    			add_location(main, file, 69, 0, 1263);
+    			attr_dev(section1, "class", "svelte-yw3wtn");
+    			add_location(section1, file, 133, 1, 3240);
+    			attr_dev(div, "class", "svelte-yw3wtn");
+    			add_location(div, file, 154, 2, 4717);
+    			attr_dev(footer, "class", "svelte-yw3wtn");
+    			add_location(footer, file, 153, 1, 4706);
+    			add_location(main, file, 115, 0, 1918);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, aside, anchor);
-    			append_dev(aside, ul4);
+    			append_dev(aside, nav);
+    			append_dev(nav, ul4);
     			append_dev(ul4, li2);
     			append_dev(li2, a0);
     			append_dev(li2, t1);
@@ -936,10 +941,39 @@ var app = (function () {
     				mutators: {
     					y: { from: 0, to: -100, ease: "InQuad" },
     					scale: { from: 1, to: 2, unit: "", ease: "InQuad" },
-    					color: { from: "#fe2b26", to: "#264ffe" }
+    					color: { from: "#fe2b26", to: "#264ffe" },
+    					letterSpacing: { from: 0, to: 4, unit: "rem" }
     				}
     			},
     		{ debug: true });
+
+    		new Wonderscroll("p, h3, pre",
+    		{
+    				params: { from: 0.1, to: -0.1 },
+    				mutators: {
+    					x: {
+    						from: 0,
+    						to: 50,
+    						unit: "rem",
+    						ease: "InQuad"
+    					},
+    					y: {
+    						from: 0,
+    						to: -50,
+    						unit: "rem",
+    						ease: "InQuad"
+    					},
+    					opacity: { from: 1, to: 0, unit: "" }
+    				}
+    			});
+
+    		new Wonderscroll("h2",
+    		{
+    				params: { from: 1, to: 0.8 },
+    				mutators: {
+    					letterSpacing: { from: 20, to: 1, unit: "rem" }
+    				}
+    			});
     	});
 
     	const writable_props = [];

@@ -23,48 +23,94 @@
 				color: {
 					from: '#fe2b26',
 					to: '#264ffe'
+				},
+				letterSpacing: {
+					from: 0,
+					to: 4,
+					unit: 'rem'
 				}
 			}
 		}, {
 			debug: true
 		});
+		new Wonderscroll('p, h3, pre', {
+			params: {
+				from: 0.1,
+				to: -0.1
+			},
+			mutators: {
+				x: {
+					from: 0,
+					to: 50,
+					unit: 'rem',
+					ease: 'InQuad'
+				},
+				y: {
+					from: 0,
+					to: -50,
+					unit: 'rem',
+					ease: 'InQuad'
+				},
+				opacity: {
+					from: 1,
+					to: 0,
+					unit: ''
+				}
+			}
+		});
+		new Wonderscroll('h2', {
+			params: {
+				from: 1,
+				to: 0.8
+			},
+			mutators: {
+				letterSpacing: {
+					from: 20,
+					to: 1,
+					unit: 'rem'
+				}
+			}
+		});
+		
 	});
 </script>
 
 <aside>
-<ul>
-	<li>
-		<a href="#introduction">Introduction</a>
+	<nav>
 		<ul>
-			<li><a href="#why-wonderscroll">Why Wonderscroll?</a></li>
-			<li><a href="#core-concepts">Core Concepts</a></li>
+			<li>
+				<a href="#introduction">Introduction</a>
+				<ul>
+					<li><a href="#why-wonderscroll">Why Wonderscroll?</a></li>
+					<li><a href="#core-concepts">Core Concepts</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#get-started">Get Started</a>
+				<ul>
+					<li><a href="#installation">Installation</a></li>
+					<li><a href="#basic-usage">Basic Usage</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#api">API</a>
+				<ul>
+					<li><a href="#wonderscroll">Wonderscroll</a></li>
+					<li><a href="#observer">Observer</a></li>
+					<li><a href="#mutator">Mutator</a></li>
+					<li><a href="#default-mutator">Default Mutator</a></li>
+					<li><a href="#transform-mutator">Transform Mutator</a></li>
+					<li><a href="#color-mutator">Color Mutator</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#demos">Demos</a>
+				<ul>
+					<li>TODO</li>
+				</ul>
+			</li>
 		</ul>
-	</li>
-	<li>
-		<a href="#get-started">Get Started</a>
-		<ul>
-			<li><a href="#installation">Installation</a></li>
-			<li><a href="#basic-usage">Basic Usage</a></li>
-		</ul>
-	</li>
-	<li>
-		<a href="#api">API</a>
-		<ul>
-			<li><a href="#wonderscroll">Wonderscroll</a></li>
-			<li><a href="#observer">Observer</a></li>
-			<li><a href="#mutator">Mutator</a></li>
-			<li><a href="#default-mutator">Default Mutator</a></li>
-			<li><a href="#transform-mutator">Transform Mutator</a></li>
-			<li><a href="#color-mutator">Color Mutator</a></li>
-		</ul>
-	</li>
-	<li>
-		<a href="#demos">Demos</a>
-		<ul>
-			<li>TODO</li>
-		</ul>
-	</li>
-</ul>
+	</nav>
 </aside>
 
 <main>
@@ -135,6 +181,10 @@
 	}
 	aside {
 		border-right: 1px solid var(--main-border-color);
+	}
+	nav {
+		position: sticky;
+		top: 20rem;
 	}
 	section {
 		padding: 0 60rem;
