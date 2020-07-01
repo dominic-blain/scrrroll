@@ -73,7 +73,7 @@
 		<small>0.0.1</small>
 	</header>
 	
-	<section id="introduction">
+	<section id="introduction" class="wonderscroll">
 		<h2>Introduction</h2>
 		<p class="emphasis">Wonderscroll is yet another javascript library for animating css properties based on scroll values. <strong>It is in early stage and many issues can still arise.</strong></p>
 		<h3 id="why-wonderscroll">Why Wonderscroll</h3>
@@ -85,16 +85,24 @@
 		They track progress between those points. Mutators are responsible for the tweening logic of all properties. They get the progress from their observer and apply easing (if applicable) to output final property value.</p>
 	</section>
 
-	<section id="introduction">
-		<h2>Introduction</h2>
-		<p class="emphasis">Wonderscroll is yet another javascript library for animating css properties based on scroll values. <strong>It is in early stage and many issues can still arise.</strong></p>
-		<h3 id="why-wonderscroll">Why Wonderscroll</h3>
-		<p>Why not? This project exists mostly as a learning project, but its aim is to be usable in production. It is used to tween css properties between a start and finish value. It is not used to trigger css animations or transitions.</p>
-		<h3 id="core-concepts">Core Concepts</h3>
-		<p>Their are 3 main objects: <strong>Wonderscroll, Observer and Mutator.</strong> Those three work together in order to efficiently modify an element' style. 
-		The Wonderscroll object is the conductor and manages its own observer(s) and their related mutator(s). 
-		Observers can set their own start and end point in relation to the screen position of the element and they know which mutators to apply. 
-		They track progress between those points. Mutators are responsible for the tweening logic of all properties. They get the progress from their observer and apply easing (if applicable) to output final property value.</p>
+	<section id="get-started">
+		<h2>Get Started</h2>
+		<h3 id="installation">Installation</h3>
+		<p>This library is not yet distributed on a CDN or as a NPM package. For now, simply grab the minified or unminified version in the <code>dist</code> folder.</p>
+		<h3 id="basic-usage">Basic Usage</h3>
+		<p>A common and simple way of creating a new Wonderscroll object would be to pass a single observer with default params and a single mutator. </p>
+		<pre><code><span class="keyword">var</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="funcName">Wonderscroll</span>{'({'}
+	<span class="property">mutators</span><span class="operator">:</span> {'{'}
+		<span class="property">opacity</span><span class="operator">:</span> {'{'}
+			<span class="property">from</span><span class="operator">:</span> <span class="number">1</span>,
+			<span class="property">to</span><span class="operator">:</span> <span class="number">0</span>,
+			<span class="property">unit</span><span class="operator">:</span> <span class="string">&#39;&#39;</span>
+		{'}'}
+	{'}'}
+{'});'}
+</code>
+</pre>
+		<p>This would create a Wonderscroll object for each <code>.wonderscroll</code> elements with a single observer with default params. It would then assign to this observer a single Mutator for its opacity that would go from fully opaque to totally transparent while the element progresses from the bottom of the screen to the top of the screen.</p>
 	</section>
 
 	<footer>
