@@ -165,7 +165,7 @@
 	footer div {
 		font-family: 'Bangers';
 		font-weight: 400;
-		font-size: 48rem;
+		font-size: 64rem;
 		text-align: center;
 		margin: 0;
 		text-shadow: 3px 2px 0px var(--accent-bg-color);
@@ -185,6 +185,15 @@
 	nav {
 		position: sticky;
 		top: 20rem;
+	}
+	nav a {
+		color: var(--main-text-color);
+		padding: 0.2em 0.2em;
+		border-radius: 3rem;
+		display: inline-block;
+	}
+	a:hover {
+		background-color: var(--accent-bg-color-light);
 	}
 	section {
 		padding: 0 60rem;
