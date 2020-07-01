@@ -85,7 +85,21 @@
 		They track progress between those points. Mutators are responsible for the tweening logic of all properties. They get the progress from their observer and apply easing (if applicable) to output final property value.</p>
 	</section>
 
-	<footer></footer>
+	<section id="introduction">
+		<h2>Introduction</h2>
+		<p class="emphasis">Wonderscroll is yet another javascript library for animating css properties based on scroll values. <strong>It is in early stage and many issues can still arise.</strong></p>
+		<h3 id="why-wonderscroll">Why Wonderscroll</h3>
+		<p>Why not? This project exists mostly as a learning project, but its aim is to be usable in production. It is used to tween css properties between a start and finish value. It is not used to trigger css animations or transitions.</p>
+		<h3 id="core-concepts">Core Concepts</h3>
+		<p>Their are 3 main objects: <strong>Wonderscroll, Observer and Mutator.</strong> Those three work together in order to efficiently modify an element' style. 
+		The Wonderscroll object is the conductor and manages its own observer(s) and their related mutator(s). 
+		Observers can set their own start and end point in relation to the screen position of the element and they know which mutators to apply. 
+		They track progress between those points. Mutators are responsible for the tweening logic of all properties. They get the progress from their observer and apply easing (if applicable) to output final property value.</p>
+	</section>
+
+	<footer>
+		<div>The End</div>
+	</footer>
 </main>
 
 
@@ -93,7 +107,8 @@
 	header {
 		margin: 30vh 0;
 	}
-	h1 {
+	h1,
+	footer div {
 		font-family: 'Bangers';
 		font-weight: 400;
 		font-size: 48rem;
@@ -135,6 +150,11 @@
 	}
 
 	footer {
+		margin-top: 100rem;
+		border-top: 1px solid var(--main-border-color);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		min-height: 100vh;
 	}
 	
